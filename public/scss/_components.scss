@@ -1,0 +1,40 @@
+.btn {
+  font-size: 2rem;
+  margin: 1.5rem;
+  padding: 10px 15px;
+  color: $highlight-orange-red;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  border: none;
+  border-radius: $rounded;
+  z-index: 1;
+  &-primary {
+    background-color: $highlight-orange-red;
+    color: white;
+  }
+}
+
+.input{
+ width: 100%;
+  padding: 12px 16px;
+  border-radius: $rounded;
+  color: #000;
+  font-family: inherit;
+  background-color: transparent;
+  border: 1px solid $gray-300;
+  &::placeholder {
+    opacity: 0.5;
+  }
+  &:focus {
+    outline: none;
+    border-color: $highlight-orange-red;
+  }
+  textarea {
+    resize: none;
+    height: 96px;
+  }
+}
+
+

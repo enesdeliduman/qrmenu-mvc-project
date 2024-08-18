@@ -1,0 +1,10 @@
+<div class="rounded-md bg-red-50 p-4 text-sm text-red-500">
+    <b>Bir hata oluştu;</b><br>
+    <ul>
+        <% alerts.forEach(error=> { %>
+            <li class="text-wrap">
+              <%= error %>
+            </li>
+            <% }) %>
+    </ul>
+</div>

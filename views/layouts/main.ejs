@@ -1,0 +1,110 @@
+<!DOCTYPE>
+<html lang="en" html data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <!-- <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="/css/swiper-bundle.css"> -->
+    <link rel="stylesheet" href="/style/styles.css">
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-logo">
+                <a href="/" class="logo">QR Menüm</a>
+            </div>
+            <div class="nav-links">
+                <% if (!isAuth) { %>
+                    <a href="/auth/login" class="nav-link btn">Giriş yap</a>
+                    <a href="/auth/register" class="nav-link btn btn-primary">Kayıt ol</a>
+                    <% } %>
+            </div>
+            <!-- Mobile Menu -->
+            <img class="mobile-menu-icon" src="/images/menu-icon.svg" alt="">
+            <div class="mobile-menu-area">
+                <div class="mobile-menu">
+                    <img class="mobile-menu-icon" src="/images/close.svg" alt="">
+                    <% if (isAuth) { %>
+                        <div class="infos">
+                            <img class="user-image" src="<%=photo%>" alt="">
+                            <p class="user-name"><%= name %></p>
+                        </div>
+                        <% } %>
+                            <div class="mobile-menu-links">
+                                <% if (!isAuth) { %>
+                                    <a class="mobile-menu-link" href="/auth/login">
+                                        <p>Giriş yap</p>
+                                    </a>
+                                    <a class="mobile-menu-link" href="/auth/register">
+                                        <p>Kayıt ol</p>
+                                    </a>
+                                    <% } else{%>
+                                        <a class="mobile-menu-link" href="./profile.html">
+                                            <img src="/images/profile.svg" alt="">
+                                            <p>Profilim</p>
+                                        </a>
+                                        <a class="mobile-menu-link" href="#">
+                                            <img src="/images/sign-out.svg" alt="">
+                                            <p>Çıkış yap</p>
+                                        </a>
+                                        <% } %>
+                            </div>
+                </div>
+            </div>
+            <% if (isAuth) { %>
+                <div class="user-area">
+                    <div class="infos">
+                        <img class="user-image" src="<%=photo%>" alt="">
+                        <p class="user-name"><%= name %></p>
+                        <img class="dropdown-icon" src="/images/bottom-arrow.svg" alt="">
+                    </div>
+                    <div class="dropdown">
+                        <a href="./profile.html">
+                            <img src="/images/profile.svg" alt="">
+                            <p>Profilim</p>
+                        </a>
+                        <a href="#">
+                            <img src="/images/sign-out.svg" alt="">
+                            <p>Çıkış yap</p>
+                        </a>
+                    </div>
+                </div>
+                <% } %>
+        </nav>
+        <div class="overlay"></div>
+
+    </header>
+
+    <main class="container">
+        <%- body %>
+    </main>
+
+    <footer>
+        <p>Devoloped by <b><a href="https://www.enesdeliduman.com">Enes DELIDUMAN</a></b></p>
+        <div class="footer-links">
+            <a href="https://www.instagram.com.com/enesdman_" target="_blank">
+                <img src="/images/instagram.svg" alt="">
+            </a>
+            <a href="https://www.github.com/enesdman0" target="_blank">
+                <img src="/images/github.svg" alt="">
+            </a>
+            <a href="https://www.linkedin.com/in/enesdeliduman" target="_blank">
+                <img src="/images/linkedin.svg" alt="">
+            </a>
+            <a href="mailto:enesdeliduman@proton.me" target="_blank">
+                <img src="/images/email.svg" alt="">
+            </a>
+        </div>
+    </footer>
+    <script src="/js/main.js"></script>
+</body>
+
+
+</html>

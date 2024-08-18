@@ -1,0 +1,90 @@
+<div class="menu-edit-area">
+    <form method="post" enctype="multipart/form-data">
+        <div class="category-edit-area">
+            <div class="category">
+                <div class="category-photo">
+                    <div class="image">
+                        <img class="food-image" data-for="category"
+                            src="<%= selectedCategory.photo?selectedCategory.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
+                        <input type="hidden" value="<%=selectedCategory.photo%>" name="categoryDefPhoto"
+                            class="def-photo" data-for="category">
+                    </div>
+                    <div class="buttons">
+                        <label for="modal" class="changeButton btn btn-primary" data-for="category">Değiştir</label>
+                        <button class="remove-button btn btn-primary" data-for="category">Kaldır</button>
+                    </div>
+                </div>
+                <div class="category-inputs">
+                    <input class="name input input-transparent" name="categoryName" placeholder="Kategori ismi"
+                        value="<%=selectedCategory.name%>" />
+                    <input class="description input input-transparent" name="categoryDescription"
+                        placeholder="Kategori açıklaması" value="<%=selectedCategory.description%>" />
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 50px 0;">
+        <div class="products-edit-area">
+            <div class="new-product">
+                <div class="new-product-skeleton-image"></div>
+                <h1 class="new-product-skeleton-text">Yeni ürün ekle</h1>
+            </div>
+            <% selectedCategory.products.forEach((product,count)=> { %>
+                <div class="product-edit-area">
+                    <div class="product-photo">
+                        <div class="image">
+                            <img class="food-image" data-for="<%=product._id%>" src="<%=product.photo%>">
+                            <input type="hidden" name="productDefPhotos[<%=product._id%>]" class="def-photo"
+                                data-for="<%=product._id%>" value="<%=product.photo%>">
+                        </div>
+                        <div class="buttons">
+                            <label for="modal" class="changeButton btn btn-primary"
+                                data-for="<%=product._id%>">Değiştir</label>
+                            <button type="button" class="remove-button btn btn-primary"
+                                data-for="<%=product._id%>">Kaldır</button>
+                        </div>
+                    </div>
+                    <div class="product-inputs">
+                        <input class="name input" name="names[<%=product._id%>]" placeholder="Ürün ismi"
+                            value="<%= product.name %>" />
+                        <textarea class="description input textarea" name="descriptions[<%=product._id%>]"
+                            placeholder="Ürün açıklaması"><%= product.description %></textarea>
+                        <input class="price input number-input" type="number" name="prices[<%=product._id%>]" placeholder="Ürün fiyatı"
+                            value="<%= product.price %>"/>
+                    </div>
+                    <!-- <div class="product-buttons">
+                            <a class="btn btn-primary">Sil</a>
+                        </div> -->
+                </div>
+                <% }) %>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal" data-for="modal">
+            <label for="modal" class="close-button">
+                <img class="close-icon" src="/images/close.svg" alt="">
+            </label>
+            <input type="checkbox" class="photoChangeInput" id="modal" data-for="modal">
+            <div class="images-area" data-for="modal">
+                <div class="new-image">
+                    <label for="product-newImageInput">
+                        <img src="/images/upload.svg" alt="">
+                    </label>
+                    <input type="file" id="product-newImageInput" class="newImageInput" data-for="modal" name="photos"
+                        multiple="true" accept="image/*">
+                </div>
+                <% photos.forEach(photo=> { %>
+                    <% if (photo) { %>
+                        <img src="<%= photo %>" class="modal-image" data-for="modal">
+                        <%}%>
+                            <%})%>
+            </div>
+
+            <span class="btn btn-primary in-modal-image-select-button" data-for="modal">Seç</span>
+
+        </div>
+        <!-- Modal -->
+        <div class="form-control">
+            <button class="btn btn-primary" type="submit">Kaydet</button>
+        </div>
+    </form>
+</div>

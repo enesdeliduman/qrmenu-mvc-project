@@ -1,0 +1,22 @@
+        <div class="cafe-home">
+            <% if (menu.categories) { %>
+                <div class="cards">
+                    <% menu.categories.forEach(menu=>{ %>
+                        <div class="card">
+                            <a href="/company/menu/<%= menu._id %>">
+                                <div class="card-image">
+                                    <img src="<%= menu.photo?menu.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
+                                </div>
+                                <div class="card-texts">
+                                    <h3 class="card-title">
+                                        <%= menu.name %>
+                                    </h3>
+                                    <p class="card-description"><%= menu.description %></p>
+                                </div>
+                            </a>
+                        </div>
+                        <% }) %>
+                        
+                    </div>
+                    <% } %>
+        </div>

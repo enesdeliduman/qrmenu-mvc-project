@@ -1,0 +1,24 @@
+<div class="login-area">
+    <form method="post">
+        <div class="error-area">
+            <% if (typeof errors!="undefined" ) { %>
+                <ul>
+                    <% errors.forEach(error=> { %>
+                        <li>
+                            <%=error%>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
+        </div>
+    <div class="inputs">
+        <input name="emailAddress" class="input" placeholder="Email" type="email" value="<%= formData?formData.emailAddress:""
+            %>" required>
+        <input name="password" class="input" placeholder="Şifre" type="password" required>
+    </div>
+    <div class="form-control">
+        <button type="submit" class="btn btn-primary">Giriş yap</button>
+    </div>
+    <span>Hesabın yok mu? <b><a href="/auth/register">Kayıt ol</a></b></span>
+    </form>
+</div>

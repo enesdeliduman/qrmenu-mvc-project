@@ -1,0 +1,954 @@
+@import "_variables.scss";
+@import "_fonts.scss";
+@import "_typographys.scss";
+@import "_mixins.scss";
+@import "_components.scss";
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $background-color;
+  color: $text-color;
+  font-family: $secondary-font;
+  transition: $general-transition;
+
+  overflow-x: hidden;
+  @include scrollbar();
+  &.overflow-y {
+    overflow-y: hidden;
+  }
+}
+
+html {
+  font-size: 10px;
+}
+
+.container {
+  max-width: 114rem;
+  margin: 0 auto;
+  width: 100%;
+  @media (max-width: 991px) {
+    width: 90%;
+  }
+}
+
+img {
+  width: 100%;
+  user-select: none;
+}
+
+input {
+  color: $text-color;
+}
+
+a {
+  color: inherit;
+  font-size: 10px;
+  text-decoration: none;
+  transition: $general-transition;
+  outline: none;
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    outline: none;
+  }
+}
+
+header {
+  margin-bottom: 150px;
+  nav {
+    background-color: $gray-100;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    padding: 3rem 9rem;
+    transition: $general-transition;
+    z-index: 1000;
+    &.scrolled {
+      padding: 1rem 5rem;
+    }
+    @include flex(center, space-between, row);
+    @include media(medium) {
+      padding: 2rem 3rem;
+      &.scrolled {
+        padding: 1rem 2rem;
+      }
+    }
+    * {
+      user-select: none;
+    }
+    .nav-logo {
+      .logo {
+        font-size: 3rem;
+        font-family: $primary-font-Bold;
+        color: $highlight-orange-red;
+      }
+    }
+    .nav-links {
+      @include media(medium) {
+        display: none;
+      }
+    }
+    .mobile-menu-icon {
+      width: 50px;
+      height: 50px;
+      display: none;
+      cursor: pointer;
+      @include media(medium) {
+        display: flex;
+      }
+    }
+    .mobile-menu-area {
+      position: fixed;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      visibility: hidden;
+      background: $gray-100;
+      transition: $general-transition;
+      transform: translateX(100%);
+      height: 100%;
+      width: 100%;
+      display: none;
+      z-index: 9999; // Ensure it's above other elements
+      @include media(medium) {
+        display: flex;
+      }
+      &-active {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        width: 100%;
+      }
+      .mobile-menu {
+        z-index: 9999; // Ensure it's above other elements
+        .infos {
+          position: absolute;
+          top: 30px;
+          left: 30px;
+          @include flex(center, space-between, row);
+          * {
+            margin: 0 10px;
+          }
+          .user-image {
+            width: 50px;
+            height: 50px;
+            border-radius: $full-rounded;
+            object-fit: cover;
+          }
+          .user-name {
+            font-size: 2rem;
+            font-family: $primary-font-Bold;
+          }
+        }
+        background-color: $gray-100;
+        width: 100%;
+        height: 100%;
+        transition: $general-transition;
+        .mobile-menu-icon {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+          position: fixed;
+          top: 40px;
+          right: 30px;
+          @include media(medium) {
+            display: flex;
+          }
+        }
+        .mobile-menu-links {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 100%;
+          padding: 10px 15px;
+          transform: translateX(-50%);
+          .mobile-menu-link {
+            width: 100%;
+            border-radius: $rounded;
+            margin: 4px 0;
+            padding: 10px 15px;
+            color: $text-color;
+            font-size: 1.8rem;
+            @include flex(center, flex-start, row);
+            * {
+              margin: 0 10px;
+            }
+            img {
+              width: 20px;
+              height: 20px;
+            }
+            &:hover {
+              background-color: $gray-300;
+            }
+            &:last-child {
+              background-color: $highlight-orange-red;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+    .user-area {
+      padding: 1rem 0.5rem;
+      border-start-start-radius: 10px;
+      border-start-end-radius: 10px;
+      position: relative;
+      transition: $general-transition;
+      @include flex(center, space-between, column);
+      .infos {
+        cursor: pointer;
+        @include flex(center, space-between, row);
+        * {
+          margin: 0 10px;
+        }
+        .user-image {
+          width: 50px;
+          height: 50px;
+          border-radius: $full-rounded;
+          object-fit: cover;
+        }
+        .user-name {
+          font-size: 2rem;
+          font-family: $primary-font-Bold;
+        }
+        .dropdown-icon {
+          width: 20px;
+          height: 20px;
+          transition: $general-transition;
+          margin: 0 10px 0 0;
+        }
+      }
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: $gray-200;
+        width: 100%;
+        max-height: 0;
+        border-end-start-radius: 10px;
+        border-end-end-radius: 10px;
+        overflow: hidden;
+        transition: $general-transition;
+        z-index: 1000; // Ensure it's above other elements
+        @include flex(center, center, column);
+        a {
+          width: 100%;
+          border-radius: $rounded;
+          margin: 4px 0;
+          padding: 10px;
+          color: $text-color;
+          font-size: 1.8rem;
+          @include flex(center, flex-start, row);
+          * {
+            margin: 0 10px;
+          }
+          img {
+            width: 20px;
+            height: 20px;
+          }
+          &:hover {
+            background-color: $gray-300;
+          }
+          &:last-child {
+            background-color: $highlight-orange-red;
+            color: white;
+          }
+        }
+      }
+      &-active {
+        background-color: $gray-200;
+        .dropdown-icon {
+          transform: rotate(180deg);
+        }
+        .dropdown {
+          max-height: 500px;
+          padding: 3px 10px 10px 10px;
+        }
+      }
+      @include media(medium) {
+        display: none;
+      }
+    }
+  }
+  .overlay {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    transition: $general-transition;
+    opacity: 0;
+    z-index: 9999; // Ensure it's on top
+    &-active {
+      pointer-events: all;
+      opacity: 1;
+      height: 100000000000000000000000000vh;
+    }
+  }
+}
+
+main {
+  .cafe-home {
+    .cards {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      padding-bottom: 40px;
+      @include media(large) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @include media(small) {
+        grid-template-columns: repeat(1, 1fr);
+      }
+      .card {
+        border-radius: $rounded;
+        background-color: $gray-100;
+        margin: 0 auto;
+        width: 90%;
+        height: 50vh;
+        @include flex(center, space-between, column);
+        .card-image {
+          border-radius: $rounded;
+          width: 100%;
+          height: 200px;
+          img {
+            border-radius: $rounded;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        .card-texts {
+          padding: 20px 40px 10px 20px;
+          .card-description {
+            font-family: $primary-font-Light;
+            font-size: 1.5rem;
+            margin: 20px 0;
+          }
+        }
+      }
+    }
+  }
+  .menu-edit-area {
+    .modal {
+      overflow-y: auto;
+      width: 60vw;
+      height: 70vh;
+      position: fixed;
+      background-color: $gray-200;
+      border-radius: $rounded;
+      z-index: 10000; // Ensure it's above everything
+      display: none;
+      padding: 80px 20px 20px 20px;
+      @include centered();
+      &-active {
+        display: block;
+      }
+      @include media(large) {
+        width: 95vw;
+        height: 80vh;
+      }
+      input {
+        display: none;
+      }
+      .close-button {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        cursor: pointer;
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+      .images-area {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        @include media(large) {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        @include media(small) {
+          grid-template-columns: repeat(1, 1fr);
+        }
+        * {
+          border-radius: $rounded;
+          cursor: pointer;
+          height: 25vh;
+        }
+        .new-image {
+          background-color: $gray-300;
+          label {
+            @include flex(center, center, column);
+            gap: 20px;
+            width: 100%;
+            height: 100%;
+            img {
+              width: 80px;
+              height: 80px;
+            }
+          }
+        }
+        .modal-image {
+          object-fit: cover;
+          transition: all 0.1s;
+          &:hover {
+            border: 2px solid $highlight-orange-red;
+          }
+          &-selected {
+            border: 4px solid $highlight-orange-red !important;
+          }
+        }
+      }
+      .in-modal-image-select-button {
+        margin-top: 40px;
+        display: block;
+      }
+    }
+    .category-edit-area {
+      border-radius: $rounded;
+      width: 100%;
+      height: 30vh;
+      background-color: $gray-100;
+      position: relative; // Ensure proper stacking context
+      @include media(large) {
+        height: 60vh;
+      }
+      .category {
+        @include flex(start, flex-start, row);
+        gap: 100px;
+        @include media(large) {
+          @include flex(center, flex-start, column);
+          gap: 0;
+        }
+
+        .category-photo {
+          width: 50%;
+          position: relative;
+          z-index: 1; // Ensure it's below modal
+          .image {
+            transition: all 1s ease;
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.5);
+              pointer-events: none;
+              border-radius: $rounded;
+              transition: $general-transition;
+              opacity: 0;
+            }
+            img {
+              border-radius: $rounded;
+              object-fit: cover;
+              height: 30vh;
+            }
+          }
+          @include media(large) {
+            width: 100%;
+          }
+          .buttons {
+            display: none;
+            transition: all 0.5s ease;
+            * {
+              margin: 5px;
+              display: block;
+            }
+            .changeButton {
+              background-color: white;
+              color: $highlight-orange-red;
+            }
+          }
+          &:hover {
+            .image {
+              &::after {
+                opacity: 1;
+              }
+            }
+            .buttons {
+              position: absolute;
+              @include flex(center, center, column);
+              @include centered();
+              z-index: 10; // Ensure it's above image
+            }
+          }
+        }
+        .category-inputs {
+          padding: 0 1rem;
+          width: 100%;
+          @include flex(center, space-between, column);
+          input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            margin: 10px 0;
+            width: 100%;
+            @include media(large) {
+              text-align: center;
+            }
+          }
+          .name {
+            font-family: $primary-font-ExtraBold;
+            font-size: 8rem;
+            font-weight: 800;
+            @include media(medium) {
+              font-size: 4rem;
+            }
+          }
+          .description {
+            font-size: 2rem;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    .products-edit-area {
+      margin: 15vh 0;
+      width: 100%;
+      .new-product {
+        user-select: none;
+        @include flex(center, flex-start, row);
+        background-color: $gray-100;
+        gap: 100px;
+        border-radius: $rounded;
+        padding: 15px;
+        margin-bottom: 25px;
+        cursor: pointer;
+        .new-product-skeleton-image {
+          width: 30%;
+          height: 15vh;
+          border-radius: $rounded;
+          background-color: $gray-200;
+        }
+        .new-product-skeleton-text {
+          font-size: 5rem;
+          color: $gray-300;
+          user-select: none;
+        }
+        @include media(large) {
+          @include flex(center, flex-start, column);
+          .new-product-skeleton-image {
+            width: 100%;
+          }
+          gap: 50px;
+          .new-product-skeleton-text {
+            font-size: 3rem;
+          }
+        }
+      }
+      .product-edit-area {
+        margin: 25px 0;
+        background-color: $gray-100;
+        padding: 1rem;
+        border-radius: $rounded;
+        @include flex(start, flex-start, row);
+        gap: 100px;
+        @include media(large) {
+          @include flex(center, flex-start, column);
+          gap: 0;
+        }
+        .modal {
+          overflow-y: auto;
+          width: 60vw;
+          height: 70vh;
+          position: fixed;
+          background-color: $gray-200;
+          border-radius: $rounded;
+          z-index: 10000; // Ensure it's above everything
+          display: none;
+          padding: 80px 20px 20px 20px;
+          @include centered();
+          &-active {
+            display: block;
+          }
+          @include media(large) {
+            width: 95vw;
+            height: 80vh;
+          }
+          input {
+            display: none;
+          }
+          .close-button {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            cursor: pointer;
+            img {
+              width: 20px;
+              height: 20px;
+            }
+          }
+          .images-area {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            @include media(large) {
+              grid-template-columns: repeat(3, 1fr);
+            }
+            @include media(small) {
+              grid-template-columns: repeat(1, 1fr);
+            }
+            * {
+              border-radius: $rounded;
+              cursor: pointer;
+              height: 25vh;
+            }
+            .new-image {
+              background-color: $gray-300;
+              label {
+                @include flex(center, center, column);
+                gap: 20px;
+                width: 100%;
+                height: 100%;
+                img {
+                  width: 80px;
+                  height: 80px;
+                }
+              }
+            }
+            .modal-image {
+              object-fit: cover;
+              transition: all 0.1s;
+              &:hover {
+                border: 2px solid $highlight-orange-red;
+              }
+              &-selected {
+                border: 4px solid $highlight-orange-red !important;
+              }
+            }
+          }
+          .in-modal-image-select-button {
+            margin-top: 40px;
+            display: block;
+          }
+        }
+        .product-photo {
+          width: 50%;
+          position: relative;
+          z-index: 1; // Ensure it's below modal
+          .image {
+            transition: all 1s ease;
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.5);
+              pointer-events: none;
+              border-radius: $rounded;
+              transition: $general-transition;
+              opacity: 0;
+            }
+            img {
+              border-radius: $rounded;
+              object-fit: cover;
+              height: 30vh;
+            }
+          }
+          @include media(large) {
+            width: 100%;
+          }
+          .buttons {
+            display: none;
+            transition: all 0.5s ease;
+            * {
+              margin: 5px;
+              display: block;
+            }
+            .changeButton {
+              background-color: white;
+              color: $highlight-orange-red;
+            }
+          }
+          &:hover {
+            .image {
+              &::after {
+                opacity: 1;
+              }
+            }
+            .buttons {
+              position: absolute;
+              @include flex(center, center, column);
+              @include centered();
+              z-index: 10; // Ensure it's above image
+            }
+          }
+        }
+        .product-inputs {
+          padding: 2rem 0;
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          align-items: start;
+          gap: 10px;
+          @include media(large) {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            grid-column-gap: 0px;
+          }
+          .name {
+            grid-area: 1 / 1 / 2 / 2;
+          }
+          .price {
+            grid-area: 2 / 1 / 3 / 2;
+          }
+          .description {
+            grid-area: 1 / 2 / 3 / 3;
+          }
+          input,
+          textarea {
+            background-color: transparent;
+            width: 100%;
+            height: 100%;
+            resize: none;
+            font-family: $secondary-font;
+            font-size: 2rem;
+          }
+          @include media(large) {
+            input,
+            textarea {
+              text-align: center;
+            }
+            .name {
+              grid-area: 1 / 1 / 2 / 2;
+            }
+            .price {
+              grid-area: 2 / 1 / 3 / 2;
+            }
+            .description {
+              grid-area: 3 / 1 / 4 / 2;
+            }
+          }
+        }
+      }
+    }
+    form {
+      .form-control {
+        width: 100%;
+        background-color: $gray-200;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        z-index: 99;
+        display: flex;
+        justify-content: center;
+        transform: translateX(-50%);
+        button {
+          width: 60%;
+          @include media(large) {
+            width: 960%;
+          }
+        }
+      }
+    }
+  }
+  .profile-area {
+    form {
+      .form-button {
+        @include flex(flex-end, flex-end, column);
+        width: 90%;
+        button {
+          width: 69%;
+          margin: 0;
+          @include media(large) {
+            width: 100%;
+          }
+        }
+      }
+      .form-controls {
+        @include flex(start, flex-start, row);
+        gap: 200px;
+        @include media(large) {
+          @include flex(center, flex-start, column);
+          gap: 50px;
+        }
+        .pp-area {
+          width: 120px;
+          height: 120px;
+          position: relative;
+          z-index: 1; // Ensure it's below modal
+          transition: all 1s ease;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            background-color: rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            border-radius: $full-rounded;
+            transition: $general-transition;
+            opacity: 0;
+          }
+          .profile-photo-img {
+            width: 120px;
+            height: 120px;
+            border-radius: $full-rounded;
+            object-fit: cover;
+          }
+
+          input {
+            display: none;
+          }
+          .buttons {
+            display: none;
+            width: 100%;
+            transition: all 0.5s ease;
+            label {
+              cursor: pointer;
+              padding: 30px;
+              img {
+                cursor: pointer;
+                filter: brightness(0) invert(1);
+              }
+            }
+          }
+          &:hover {
+            &::after {
+              opacity: 1;
+            }
+            .buttons {
+              position: absolute;
+              @include flex(center, center, column);
+              @include centered();
+              z-index: 10;
+            }
+          }
+        }
+        .inputs {
+          @include flex(start, space-between, row);
+          @include media(large) {
+            @include flex(center, flex-start, column);
+          }
+          .input-group {
+            @include flex(start, flex-start, column);
+            width: 100%;
+            margin-bottom: 20px;
+            span {
+              margin-top: -10px;
+            }
+          }
+          textarea {
+            width: 325px !important;
+            resize: none;
+          }
+          gap: 50px;
+          .left {
+            @include flex(center, space-between, column);
+            .input {
+              margin-bottom: 20px;
+              width: 100%;
+              font-size: 24px;
+            }
+          }
+          .right {
+            @include flex(center, space-between, column);
+            .input {
+              margin-bottom: 20px;
+              width: 100%;
+              font-size: 24px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .login-area,
+  .register-area {
+    form {
+      @include flex(center, center, column);
+      width: 50%;
+      gap: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      .error-area {
+        @include flex(center, center, column);
+        margin-top: 50px;
+        width: 40vw;
+        font-size: 2rem;
+        min-height: 100px;
+        color: red;
+        @include media(large) {
+          margin-top: 0;
+        }
+      }
+      .inputs {
+        @include flex(center, center, column);
+        gap: 15px;
+        width: 25vw;
+        @include media(large) {
+          width: 85vw;
+        }
+        input {
+          width: 100%;
+          font-size: 2rem;
+        }
+      }
+      .form-control {
+        width: 25vw;
+        @include media(large) {
+          width: 85vw;
+        }
+        button {
+          font-size: 1.5rem;
+          width: 100%;
+          margin: 0;
+        }
+      }
+      span {
+        white-space: nowrap;
+        margin-top: 20px;
+        font-size: 1.8rem;
+        a {
+          font-size: 1.8rem;
+        }
+      }
+    }
+  }
+}
+
+footer {
+  width: 100%;
+  height: 30vh;
+  background-color: $gray-200;
+  @include flex(center, center, column);
+  gap: 30px;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  margin-top: 100px;
+  p,
+  a {
+    font-size: large;
+    font-family: $secondary-font;
+  }
+  .footer-links {
+    a {
+      margin: 0 10px;
+      img {
+        width: 25px;
+      }
+    }
+  }
+}
