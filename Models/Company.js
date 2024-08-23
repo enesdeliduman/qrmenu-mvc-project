@@ -12,7 +12,7 @@ const CompanySchema = new Schema({
         type: String,
         required: [true, "Lütfen şirketinizin ismini giriniz"],
         trim: true,
-        minLength: [3, "Şirket ismi en az 3 kelime olmalıdır"],
+        minLength: [3, "Şirket ismi en az 3 harf olmalıdır"],
         unique: false
     },
     emailAddress: {
@@ -36,7 +36,7 @@ const CompanySchema = new Schema({
     },
     photo: {
         type: String,
-        default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        default: "default-profile.jpg"
     },
     qrcode: {
         type: String,
@@ -63,15 +63,7 @@ const CompanySchema = new Schema({
         type: Number
     },
     address: {
-        city: {
-            type: String
-        },
-        district: {
-            type: String
-        },
-        neighborhood: {
-            type: String
-        }
+        type: String
     },
     isAdmin: {
         type: Boolean,
@@ -132,7 +124,7 @@ CompanySchema.pre('save', async function (next) {
                 newSlug = `${baseSlug}-${suffix}`;
             }
             this.slugfield = newSlug;
-            const qrCodeData = await QRCode.toString(`${process.env.SITE_URL}/${this.slugfield}`, { type: 'svg', width: 150, height: 150 });
+            const qrCodeData = await QRCode.toString(`${process.env.SITE_URL}/${this.slugfield}`, { type: 'svg' });
             this.qrcode = qrCodeData;
 
         } catch (err) {

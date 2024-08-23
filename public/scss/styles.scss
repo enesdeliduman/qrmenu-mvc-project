@@ -200,31 +200,34 @@ header {
     .user-area {
       padding: 1rem 0.5rem;
       border-start-start-radius: 10px;
+      min-width: 215px;
       border-start-end-radius: 10px;
       position: relative;
       transition: $general-transition;
-      @include flex(center, space-between, column);
+      @include flex(flex-start, space-between, column);
       .infos {
         cursor: pointer;
         @include flex(center, space-between, row);
         * {
           margin: 0 10px;
         }
-        .user-image {
-          width: 50px;
-          height: 50px;
-          border-radius: $full-rounded;
-          object-fit: cover;
-        }
-        .user-name {
-          font-size: 2rem;
-          font-family: $primary-font-Bold;
+        .user {
+          @include flex(center, space-between, row);
+          .user-image {
+            width: 50px;
+            height: 50px;
+            border-radius: $full-rounded;
+            object-fit: cover;
+          }
+          .user-name {
+            font-size: 2rem;
+            font-family: $primary-font-Bold;
+          }
         }
         .dropdown-icon {
           width: 20px;
           height: 20px;
           transition: $general-transition;
-          margin: 0 10px 0 0;
         }
       }
       .dropdown {
@@ -232,6 +235,7 @@ header {
         top: 100%;
         left: 0;
         background-color: $gray-200;
+        min-width: 215px;
         width: 100%;
         max-height: 0;
         border-end-start-radius: 10px;
@@ -297,6 +301,55 @@ header {
       height: 100000000000000000000000000vh;
     }
   }
+  .qrcode-area {
+    overflow-y: auto;
+    width: 30vw;
+    height: 70vh;
+    position: fixed;
+    background-color: $gray-200;
+    border-radius: $rounded;
+    z-index: 10000; // Ensure it's above everything
+    display: none;
+    padding: 80px 20px 20px 20px;
+    @include centered();
+    &-active {
+      display: block;
+    }
+    @include media(large) {
+      width: 95vw;
+      height: 60vh;
+    }
+    input {
+      display: none;
+    }
+    #qrcode-area-close-button {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      cursor: pointer;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    .img {
+      @include flex(center, center, column);
+      user-select: none;
+      cursor: pointer;
+      svg {
+        width: 75%;
+      }
+    }
+    p {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.5rem;
+    }
+    .download-button {
+      margin-top: 40px;
+      display: block;
+    }
+  }
 }
 
 main {
@@ -320,6 +373,9 @@ main {
         width: 90%;
         height: 50vh;
         @include flex(center, space-between, column);
+        a {
+          width: 100%;
+        }
         .card-image {
           border-radius: $rounded;
           width: 100%;
@@ -762,6 +818,7 @@ main {
     }
   }
   .profile-area {
+    margin-top: 180px;
     form {
       .form-button {
         @include flex(flex-end, flex-end, column);
@@ -772,6 +829,9 @@ main {
           @include media(large) {
             width: 100%;
           }
+        }
+        @include media(large) {
+          width: 100%;
         }
       }
       .form-controls {
@@ -871,6 +931,14 @@ main {
           }
         }
       }
+      @include media(large) {
+        .form-controls {
+          @include media(large) {
+            @include flex(center, flex-start, column);
+            gap: 50px;
+          }
+        }
+      }
     }
   }
   .login-area,
@@ -881,17 +949,6 @@ main {
       gap: 10px;
       margin-left: auto;
       margin-right: auto;
-      .error-area {
-        @include flex(center, center, column);
-        margin-top: 50px;
-        width: 40vw;
-        font-size: 2rem;
-        min-height: 100px;
-        color: red;
-        @include media(large) {
-          margin-top: 0;
-        }
-      }
       .inputs {
         @include flex(center, center, column);
         gap: 15px;
@@ -926,7 +983,17 @@ main {
     }
   }
 }
-
+.error-area {
+  @include flex(center, center, column);
+  width: 40vw;
+  font-size: 2rem;
+  min-height: 100px;
+  color: red;
+  @include media(large) {
+    margin-top: 0;
+    width: 100%;
+  }
+}
 footer {
   width: 100%;
   height: 30vh;

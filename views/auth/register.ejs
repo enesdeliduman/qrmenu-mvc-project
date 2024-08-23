@@ -1,28 +1,28 @@
 <div class="register-area">
     <form method="post">
-        <div class="error-area">
-            <% if (typeof errors!="undefined" ) { %>
+        <% if (errors && errors.length> 0) { %>
+            <div class="error-area">
                 <ul>
                     <% errors.forEach(error=> { %>
                         <li>
-                            <%=error%>
+                            <%= error %>
                         </li>
                         <% }) %>
                 </ul>
-                <% } %>
-        </div>
-        <div class="inputs">
-            <input name="name" class="input" placeholder="Şirket ismi" type="text" required
-                value="<%= formData?formData.name:""  %>">
-            <input name="emailAddress" class="input" placeholder="Email" type="email" required
-                value="<%= formData?formData.emailAddress:""  %>">
-            <input name="telephone" class="input" placeholder="Telefon no" type="tel" required
-                value="<%= formData?formData.telephone:""  %>">
-            <input name="password" class="input" placeholder="Şifre" type="password" required>
-        </div>
-        <div class="form-control">
-            <button type="submit" class="btn btn-primary">Giriş yap</button>
-        </div>
-        <span>Zaten hesabın var mı? <b><a href="./login.html">Giriş yap</a></b></span>
+            </div>
+            <% } %>
+                <div class="inputs">
+                    <input name="name" class="input" placeholder="Şirket ismi" type="text" required
+                        value="<%= formData?formData.name:""  %>">
+                    <input name="emailAddress" class="input" placeholder="Email" type="email" required
+                        value="<%= formData?formData.emailAddress:""  %>">
+                    <input name="telephone" class="input" placeholder="Telefon no" type="tel" required
+                        value="<%= formData?formData.telephone:""  %>">
+                    <input name="password" class="input" placeholder="Şifre" type="password" required>
+                </div>
+                <div class="form-control">
+                    <button type="submit" class="btn btn-primary">Giriş yap</button>
+                </div>
+                <span>Zaten hesabın var mı? <b><a href="./login.html">Giriş yap</a></b></span>
     </form>
 </div>

@@ -10,7 +10,10 @@ const multer = require("../helpers/fileUpload.js")
 router.get('/', isAuth, companyController.index);
 
 router.get('/menu/:id', isAuth, companyController.menuGet);
-router.post('/menu/:id', isAuth, multer.upload.array('photos', 12), companyController.menuPost);
+router.post('/menu/:id', isAuth, multer.upload.array('photos', 10), companyController.menuPost);
+
+router.get('/profile', isAuth, companyController.profileGet);
+router.post('/profile', isAuth, multer.upload.single('photo'), companyController.profilePost);
 
 
 module.exports = router;

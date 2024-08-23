@@ -13,7 +13,7 @@ module.exports.index = asyncHandler(async (req, res, next) => {
         header: 'Page Header'
     };
     return res.render("company/index", {
-        title: `QR Menüm | ${req.session.name}`,
+        title: `Kare Menüm | ${req.session.name}`,
         company: company,
         menu: menu,
     })
@@ -26,23 +26,14 @@ module.exports.menuGet = asyncHandler(async (req, res, next) => {
     // `menu[0].categories` -> `companyMenu[0].categories`
     const categories = companyMenu[0].categories;
 
-    let photos = []
-
-    categories.forEach(category => {
-        photos.push(category.photo);
-        category.products.forEach(product => {
-            if (!photos.includes(product.photo)) {
-                photos.push(product.photo)
-            }
-        })
-    })
+    let photos = companyMenu[0].photos
 
     // `menu` -> `selectedCategory`
     let selectedCategory = categories.find(category => category._id == categoryId);
 
     // Render the view with a more descriptive title and selected category
     return res.render("company/menu", {
-        title: `QR Menüm | ${req.session.name}`,
+        title: `Kare Menüm | ${req.session.name}`,
         selectedCategory: selectedCategory,
         photos: photos
     });
@@ -55,6 +46,12 @@ module.exports.menuPost = asyncHandler(async (req, res, next) => {
     // Find the menu for the current company
     let menu = await Menu.findOne({ company: req.session.companyId });
     if (!menu) return res.status(404).send({ error: "Menu not found" });
+
+
+
+    req.files.forEach(file => {
+        menu.photos.unshift(file.originalname)
+    })
 
     let category = menu.categories.id(id);
 
@@ -86,9 +83,63 @@ module.exports.menuPost = asyncHandler(async (req, res, next) => {
             });
         }
     });
-
     // Save the menu
     await menu.save();
 
-    res.status(200).send({ category: category, body: req.body });
+    return res.redirect(req.originalUrl)
+});
+
+module.exports.profileGet = asyncHandler(async (req, res, next) => {
+    const errors = req.session.errors || [];
+    const formData = req.session.formData || {};
+
+    req.session.errors = null;
+    req.session.formData = null;
+
+
+    const company = await Company.findById(req.session.companyId)
+
+    return res.render("company/profile", {
+        title: `Kare Menüm | ${req.session.name} profil`,
+        company: company,
+        errors: errors,
+        formData: formData
+    });
+});
+
+module.exports.profilePost = asyncHandler(async (req, res, next) => {
+    const { name, emailAddress, telephone, address, instagram, facebook, twitter, youtube } = req.body
+    let company = await Company.findById(req.session.companyId);
+
+    let profilePhoto
+    if (req.file) {
+        profilePhoto = req.file.originalname
+    }
+
+    company.name = name,
+        company.emailAddress = emailAddress,
+        company.telephone = telephone,
+        company.address = address,
+        company.socialMedia.instagram = instagram,
+        company.socialMedia.facebook = facebook,
+        company.socialMedia.youtube = youtube,
+        company.socialMedia.twitter = twitter
+    company.photo = profilePhoto ??= company.photo
+
+    await company.save();
+
+    req.session.name = name;
+    req.session.email = emailAddress;
+    req.session.telephone = telephone;
+    req.session.address = address;
+    req.session.socialMedia.instagram = instagram;
+    req.session.socialMedia.facebook = facebook;
+    req.session.socialMedia.youtube = youtube;
+    req.session.qrcode = company.qrcode;
+    req.session.socialMedia.twitter = twitter;
+    req.session.photo = profilePhoto ??= company.photo;
+
+
+
+    return res.redirect('/')
 });

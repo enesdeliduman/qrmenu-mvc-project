@@ -1,10 +1,11 @@
 const Company = require("../Models/Company");
+const Menu = require("../Models/Menu");
 const asyncHandler = require("express-async-handler");
 
 module.exports.getLogin = asyncHandler(async (req, res, next) => {
     const errors = req.session.errors || [];
     const formData = req.session.formData || {};
-    
+
     // `errors` ve `formData` her zaman var olabilir, temizlik işlemi `postLogin` içinde yapılır
     req.session.errors = null;
     req.session.formData = null;
@@ -38,6 +39,8 @@ module.exports.postLogin = asyncHandler(async (req, res, next) => {
             req.session.email = company.emailAddress;
             req.session.telephone = company.telephone;
             req.session.address = company.address;
+            req.session.socialMedia = company.socialMedia;
+            req.session.qrcode = company.qrcode;
             req.session.photo = company.photo;
             req.session.errors = null; // Başarılı girişte hataları temizleyin
             req.session.formData = null; // Başarılı girişte form verilerini temizleyin
@@ -54,7 +57,6 @@ module.exports.getRegister = asyncHandler(async (req, res, next) => {
     const errors = req.session.errors || [];
     const formData = req.session.formData || {};
 
-    // `errors` ve `formData` her zaman var olabilir, temizlik işlemi `postRegister` içinde yapılır
     req.session.errors = null;
     req.session.formData = null;
 
@@ -66,20 +68,55 @@ module.exports.getRegister = asyncHandler(async (req, res, next) => {
     });
 });
 
+
 module.exports.postRegister = asyncHandler(async (req, res, next) => {
     const { name, emailAddress, telephone, password } = req.body;
 
-    // Şirket oluştur
-    await Company.create({
-        name,
-        emailAddress,
-        telephone,
-        password
-    });
+    try {
+        // Şirket oluştur
+        let company = await Company.create({
+            name,
+            emailAddress,
+            telephone,
+            password
+        });
 
-    // Kayıt işlemi başarılı, form verilerini temizleyin
-    req.session.errors = null;
-    req.session.formData = null;
+        // Menüyü oluştur veya güncelle
+        // Menü modelinin id'sinin şirketin id'si ile eşleştiğinden emin olun
+        let updatedMenu = await Menu.findOneAndUpdate(
+            { company: company._id },
+            {
+                $push: {
+                    categories: {
+                        name: 'İçecekler',
+                        photo: 'cay.jpg',
+                        description: 'Ferahlatıcı ve lezzetli içeceklerimizle kendinizi şımartın. Her damak zevkine uygun seçenekler sizi bekliyor!',
+                        products: [
+                            {
+                                name: 'Çay',
+                                description: 'Yüksek kaliteli, taze demlenmiş çaylarımızla rahatlatıcı bir molanın tadını çıkarın.',
+                                price: 8,
+                                photo: 'cay.jpg'
+                            }
+                        ]
+                    }
+                }
+            },
+            { new: true, upsert: true } // Menü bulunmazsa yeni bir tane oluştur
+        );
 
-    res.redirect("/auth/login");
+        // Kayıt işlemi başarılı, form verilerini temizleyin
+        req.session.errors = null;
+        req.session.formData = null;
+
+        res.redirect("/auth/login");
+    } catch (error) {
+        next(error); // Hata durumunda hata işleme middleware'ine geçiş
+    }
+});
+
+
+module.exports.logout = asyncHandler(async (req, res, next) => {
+    await req.session.destroy();
+    res.redirect('/')
 });

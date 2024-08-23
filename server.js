@@ -10,7 +10,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const locals = require('./middlewares/locals');
 const bodyParser = require('body-parser');
-  
+
 
 app.use(expressLayouts);
 app.use((req, res, next) => {
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 // app.use(compression())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use(helmet()); // Güvenlik başlıkları ekler
+// app.use(helmet());
 
 // Session ayarları
 app.use(session({
@@ -46,10 +46,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 (async () => {
   await connectDB();
-  // await createDummyData(); 
+  await createDummyData(); 
 })();
 
 // Robots.txt yapılandırması

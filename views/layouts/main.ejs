@@ -1,5 +1,5 @@
 <!DOCTYPE>
-<html lang="en" html data-theme="light">
+<html lang="TR" html data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
     <header>
         <nav>
             <div class="nav-logo">
-                <a href="/" class="logo">QR Menüm</a>
+                <a href="/" class="logo">Kare Menüm</a>
             </div>
             <div class="nav-links">
                 <% if (!isAuth) { %>
@@ -33,8 +33,10 @@
                     <img class="mobile-menu-icon" src="/images/close.svg" alt="">
                     <% if (isAuth) { %>
                         <div class="infos">
-                            <img class="user-image" src="<%=photo%>" alt="">
-                            <p class="user-name"><%= name %></p>
+                            <img class="user-image" src="/uploads/<%=photo%>" alt="">
+                            <p class="user-name">
+                                <%= name %>
+                            </p>
                         </div>
                         <% } %>
                             <div class="mobile-menu-links">
@@ -46,11 +48,15 @@
                                         <p>Kayıt ol</p>
                                     </a>
                                     <% } else{%>
-                                        <a class="mobile-menu-link" href="./profile.html">
+                                        <a class="mobile-menu-link qrcode" href="#">
+                                            <img src="/images/karekod.svg" alt="">
+                                            <p>Karekodum</p>
+                                        </a>
+                                        <a class="mobile-menu-link" href="/company/profile">
                                             <img src="/images/profile.svg" alt="">
                                             <p>Profilim</p>
                                         </a>
-                                        <a class="mobile-menu-link" href="#">
+                                        <a class="mobile-menu-link" href="/auth/logout">
                                             <img src="/images/sign-out.svg" alt="">
                                             <p>Çıkış yap</p>
                                         </a>
@@ -61,16 +67,24 @@
             <% if (isAuth) { %>
                 <div class="user-area">
                     <div class="infos">
-                        <img class="user-image" src="<%=photo%>" alt="">
-                        <p class="user-name"><%= name %></p>
+                        <div class="user">
+                            <img class="user-image" src="/uploads/<%=photo%>" alt="">
+                            <p class="user-name">
+                                <%= name %>
+                            </p>
+                        </div>
                         <img class="dropdown-icon" src="/images/bottom-arrow.svg" alt="">
                     </div>
                     <div class="dropdown">
-                        <a href="./profile.html">
+                        <a href="#" class="qrcode">
+                            <img src="/images/karekod.svg" alt="">
+                            <p>Karekodum</p>
+                        </a>
+                        <a href="/company/profile">
                             <img src="/images/profile.svg" alt="">
                             <p>Profilim</p>
                         </a>
-                        <a href="#">
+                        <a href="/auth/logout">
                             <img src="/images/sign-out.svg" alt="">
                             <p>Çıkış yap</p>
                         </a>
@@ -79,7 +93,17 @@
                 <% } %>
         </nav>
         <div class="overlay"></div>
-
+        <% if (isAuth) { %>
+            <div class="qrcode-area">
+                <a id="qrcode-area-close-button">
+                    <img class="close-icon" src="/images/close.svg" alt="">
+                </a>
+                <div class="img" id="qrcode-img">
+                    <%- qrcode %>
+                </div>
+                <p>*Karekodunuzu SVG formatında indirmek için üzerine tıklayınız</p>
+            </div>
+            <% } %>
     </header>
 
     <main class="container">

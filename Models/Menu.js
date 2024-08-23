@@ -16,7 +16,7 @@ const MenuSchema = new Schema({
             photo: {
                 type: String,
             },
-            description:{
+            description: {
                 type: String
             },
             products: [
@@ -42,6 +42,9 @@ const MenuSchema = new Schema({
             ]
         }
     ],
+    photos: {
+        type: Array
+    },
     created_at: {
         type: Date,
         default: Date.now

@@ -1,0 +1,81 @@
+<div class="profile-area">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-controls">
+            <div class="pp-area">
+                <img class="profile-photo-img" src="/uploads/<%=photo%>">
+                <div class="buttons">
+                    <label for="new-profile-photo" class="changeButton-profile">
+                        <img src="/images/upload.svg" id="new-profile-photo-label-img" alt="">
+                    </label>
+                </div>
+                <input type="file" name="photo" id="new-profile-photo">
+            </div>
+            <div class="right">
+                <% if (errors && errors.length> 0) { %>
+                    <div class="error-area">
+                        <ul>
+                            <% errors.forEach(error=> { %>
+                                <li>
+                                    <%= error %>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                    <% } %>
+
+                        <div class="inputs">
+                            <div class="left">
+                                <div class="input-group">
+                                    <input type="text" class="input" value="<%= formData.name??=name %>"
+                                        placeholder="İsim" name="name">
+                                    <span>
+                                        *İsminizi değiştirdiğinizde <b>QR kodunuz'da</b> değişecektir
+                                    </span>
+                                </div>
+                                <div class="input-group">
+                                    <input type="email" class="input" value="<%= formData.email??=email %>"
+                                        placeholder="Email" name="emailAddress">
+                                </div>
+                                <div class="input-group">
+                                    <input type="tel" class="input"
+                                        value="<%= formData.telephone??=telephone %>"
+                                        placeholder="Telefon" name="telephone">
+
+                                </div>
+                                <div class="input-group">
+                                    <textarea type="text" class="input" placeholder="Adres"
+                                        name="address"><%= address %></textarea>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="input-group">
+                                    <input type="text" class="input social-media-input"
+                                        value="<%= formData.socialMedia??=socialMedia.instagram %>"
+                                        placeholder="instagram" name="instagram">
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input social-media-input"
+                                        value="<%= formData.socialMedia??=socialMedia.facebook %>"
+                                        placeholder="facebook" name="facebook">
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input social-media-input"
+                                        value="<%= formData.socialMedia??=socialMedia.twitter %>"
+                                        placeholder="twitter" name="twitter">
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input social-media-input"
+                                        value="<%= formData.socialMedia??=socialMedia.youtube %>"
+                                        placeholder="youtube" name="youtube">
+                                </div>
+
+                            </div>
+                        </div>
+            </div>
+        </div>
+
+        <div class="form-button">
+            <button class="btn btn-primary" type="submit">Kaydet</button>
+        </div>
+    </form>
+</div>

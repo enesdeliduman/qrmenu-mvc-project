@@ -5,7 +5,7 @@
                 <div class="category-photo">
                     <div class="image">
                         <img class="food-image" data-for="category"
-                            src="<%= selectedCategory.photo?selectedCategory.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
+                            src="/uploads/<%= selectedCategory.photo?selectedCategory.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
                         <input type="hidden" value="<%=selectedCategory.photo%>" name="categoryDefPhoto"
                             class="def-photo" data-for="category">
                     </div>
@@ -16,9 +16,9 @@
                 </div>
                 <div class="category-inputs">
                     <input class="name input input-transparent" name="categoryName" placeholder="Kategori ismi"
-                        value="<%=selectedCategory.name%>" />
+                        value="<%=selectedCategory.name%>" required/>
                     <input class="description input input-transparent" name="categoryDescription"
-                        placeholder="Kategori açıklaması" value="<%=selectedCategory.description%>" />
+                        placeholder="Kategori açıklaması" value="<%=selectedCategory.description%>" required/>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <div class="product-edit-area">
                     <div class="product-photo">
                         <div class="image">
-                            <img class="food-image" data-for="<%=product._id%>" src="<%=product.photo%>">
+                            <img class="food-image" data-for="<%=product._id%>" src="/uploads/<%=product.photo%>">
                             <input type="hidden" name="productDefPhotos[<%=product._id%>]" class="def-photo"
                                 data-for="<%=product._id%>" value="<%=product.photo%>">
                         </div>
@@ -45,11 +45,11 @@
                     </div>
                     <div class="product-inputs">
                         <input class="name input" name="names[<%=product._id%>]" placeholder="Ürün ismi"
-                            value="<%= product.name %>" />
+                            value="<%= product.name %>" required />
                         <textarea class="description input textarea" name="descriptions[<%=product._id%>]"
-                            placeholder="Ürün açıklaması"><%= product.description %></textarea>
+                            placeholder="Ürün açıklaması" required><%= product.description %></textarea>
                         <input class="price input number-input" type="number" name="prices[<%=product._id%>]" placeholder="Ürün fiyatı"
-                            value="<%= product.price %>"/>
+                            value="<%= product.price %>" required/>
                     </div>
                     <!-- <div class="product-buttons">
                             <a class="btn btn-primary">Sil</a>
@@ -69,12 +69,12 @@
                     <label for="product-newImageInput">
                         <img src="/images/upload.svg" alt="">
                     </label>
-                    <input type="file" id="product-newImageInput" class="newImageInput" data-for="modal" name="photos"
-                        multiple="true" accept="image/*">
+                    <input type="file" id="product-newImageInput" class="newImageInput" data-for="modal" max="5" name="photos"
+                        multiple="true" accept=".jpg, .jpeg, .png">
                 </div>
                 <% photos.forEach(photo=> { %>
                     <% if (photo) { %>
-                        <img src="<%= photo %>" class="modal-image" data-for="modal">
+                        <img src="/uploads/<%= photo %>" class="modal-image" data-for="modal" data-name="<%= photo %>">
                         <%}%>
                             <%})%>
             </div>

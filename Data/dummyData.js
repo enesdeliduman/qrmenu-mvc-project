@@ -6,6 +6,8 @@ const QRCode = require("qrcode");
 const Company = require('../Models/Company');  // Şirket şeması
 const Menu = require('../Models/Menu');        // Menü şeması
 
+
+
 // Dummy veri oluşturma
 const createDummyData = async () => {
     const companies = [
@@ -14,39 +16,42 @@ const createDummyData = async () => {
             emailAddress: 'alpha@example.com',
             password: await bcrypt.hash("root", 10),
             telephone: 1234567890,
-            photo: 'https://i.pinimg.com/736x/2f/fb/dc/2ffbdcdf421e37ff00b84643913c9e18.jpg',
-            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "alpha-sirketi", { type: 'svg', width: 150, height: 150 }),
+            photo: 'alpha-logo.jpg',
+            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "alpha-sirketi", { type: 'svg' }),
             views: 150,
-            address: { city: 'Alpha Şehri', district: 'Alpha İlçesi', neighborhood: 'Alpha Mahallesi' },
+            address: 'Alpha Şehri',
             isAdmin: true,
             isConfirm: true,
-            resetPassword: { token: 'alphaResetToken', expired: new Date(Date.now() + 3600 * 1000) }
+            resetPassword: { token: 'alphaResetToken', expired: new Date(Date.now() + 3600 * 1000) },
+            socialMedia: { instagram: 'AlphaInstagram', facebook: 'AlphaFacebook', youtube: 'AlphaYoutube', twitter: 'AlphaTwitter' }
         },
         {
             name: 'Beta Şirketi',
             emailAddress: 'beta@example.com',
             password: await bcrypt.hash("root", 10),
             telephone: 2345678901,
-            photo: 'https://static.vecteezy.com/system/resources/previews/004/909/732/non_2x/logo-cafe-free-vector.jpg',
-            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "beta-sirketi", { type: 'svg', width: 150, height: 150 }),
+            photo: 'beta-logo.jpg',
+            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "beta-sirketi", { type: 'svg' }),
             views: 200,
-            address: { city: 'Beta Şehri', district: 'Beta İlçesi', neighborhood: 'Beta Mahallesi' },
+            address: 'Beta Şehri',
             isAdmin: false,
             isConfirm: true,
-            resetPassword: { token: 'betaResetToken', expired: new Date(Date.now() + 3600 * 1000) }
+            resetPassword: { token: 'betaResetToken', expired: new Date(Date.now() + 3600 * 1000) },
+            socialMedia: { instagram: 'BetaInstagram', facebook: 'BetaFacebook', youtube: 'BetaYoutube', twitter: 'BetaTwitter' }
         },
         {
             name: 'Gamma Şirketi',
             emailAddress: 'gamma@example.com',
             password: await bcrypt.hash("root", 10),
             telephone: 3456789012,
-            photo: 'https://img.freepik.com/premium-vector/creative-cafe-logo-design-isolated-with-coffee-bean_11980-612.jpg',
-            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "gamma-sirketi", { type: 'svg', width: 150, height: 150 }),
+            photo: 'gamma-logo.png',
+            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "gamma-sirketi", { type: 'svg' }),
             views: 250,
-            address: { city: 'Gamma Şehri', district: 'Gamma İlçesi', neighborhood: 'Gamma Mahallesi' },
+            address: 'Gamma Şehri',
             isAdmin: false,
             isConfirm: false,
-            resetPassword: { token: 'gammaResetToken', expired: new Date(Date.now() + 3600 * 1000) }
+            resetPassword: { token: 'gammaResetToken', expired: new Date(Date.now() + 3600 * 1000) },
+            socialMedia: { instagram: 'GammaInstagram', facebook: 'GammaFacebook', youtube: 'GammaYoutube', twitter: 'GammaTwitter' }
         }
     ];
 
@@ -54,79 +59,94 @@ const createDummyData = async () => {
         {
             name: 'Başlangıçlar',
             description: 'Lezzetli ve hafif başlangıçlarla sofralarınızı renklendirin.',
-            photo: "https://evdekilezzet.com/wp-content/uploads/2019/02/Ispanakli_Tava_Boregi_Tarifi-Evdeki_Lezzet-627x353.jpg",
+            photo: "baslangiclar.jpg",
             products: [
                 {
                     name: 'Sigara Böreği',
                     description: 'Kızarmış yufka içinde peynir ve maydanoz. Çok lezzetli bir başlangıç!',
                     price: 15.00,
-                    photo: 'https://cdn.yemek.com/mncrop/940/625/uploads/2024/01/sigara-boregi-yemekcom.jpg'
+                    photo: 'sigara-boregi.jpg'
                 },
                 {
                     name: 'Cacık',
                     description: 'Yoğurt, salatalık ve nane ile hazırlanan serinletici bir meze. Hafif ve ferahlatıcı.',
                     price: 10.00,
-                    photo: 'https://image.milimaj.com/i/milliyet/75/0x410/61e16e0486b24a15e8c0dfe0.jpg'
+                    photo: 'cacik.jpg'
                 },
                 {
                     name: 'Fava',
                     description: 'Bezelye püresi, zeytinyağı ve baharatlarla yapılmış geleneksel bir başlangıç. Yoğun ve zengin bir tat.',
                     price: 12.00,
-                    photo: 'https://cdn.yemek.com/mnresize/940/940/uploads/2014/08/fava-one-cikan-yeni.jpg'
+                    photo: 'fava.jpg'
                 }
             ]
         },
         {
             name: 'Ana Yemekler',
             description: 'Zengin tatlar ve doyurucu ana yemeklerle ana öğününüzü tamamlayın.',
-            photo: "https://i.ytimg.com/vi/41upHm1RPwM/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBCQvaAwzziLWeMdusJJxa6WL2ISQ",
+            photo: "ana-yemekler.jpg",
             products: [
                 {
                     name: 'İskender Kebabı',
                     description: 'İskender kebabı, yoğurt ve domates sosu ile servis edilen döner et. Klasik ve doyurucu.',
                     price: 30.00,
-                    photo: 'https://www.dergibursa.com.tr/wp-content/uploads/2015/08/iskender-kebap.jpg'
+                    photo: 'iskender-kebabi.jpg'
                 },
                 {
                     name: 'Kuzu Tandır',
                     description: 'Uzun saatler pişirilmiş kuzu eti, patates ve sebzelerle servis edilir. Nefis ve lezzetli.',
                     price: 40.00,
-                    photo: 'https://i.ytimg.com/vi/IOGAjgwlQ6g/maxresdefault.jpg'
+                    photo: 'kuzu-tandir.jpg'
                 },
                 {
                     name: 'Mantarlı Tavuk',
                     description: 'Kremalı mantar sosuyla servis edilen tavuk göğsü. Hafif ve kremalı.',
                     price: 25.00,
-                    photo: 'https://i.hakimiyet.com/c/60/1280x720/s/dosya/haber/lezzetli-ve-pratik-evde-mantar_1711790908_2lCsTy.jpg'
+                    photo: 'mantarli-tavuk.jpg'
                 }
             ]
         },
         {
             name: 'Tatlılar',
             description: 'Tatlı krizlerinizi giderecek enfes tatlı seçenekleri.',
-            photo: "https://denizliyeniolay.com/1200/630/1/media/2023/08/Bagimlisi-Olacag-1691575760.jpg",
+            photo: "tatlilar.jpg",
             products: [
                 {
                     name: 'Baklava',
                     description: 'Pistachio ve şeker şerbeti ile hazırlanan geleneksel tatlı. Tatlı ve çıtır.',
                     price: 20.00,
-                    photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqcXBktNsIimO0afpqZTFfKzsZaqzk-5FHsQ&s'
+                    photo: 'baklava.jpg'
                 },
                 {
                     name: 'Sütlaç',
                     description: 'Süt ve pirinçten yapılan tatlı, üzerine tarçın ile servis edilir. Klasik ve hafif.',
                     price: 12.00,
-                    photo: 'https://cdn.yemek.com/mnresize/1250/833/uploads/2019/05/sutlac-guncelleme-sunum-1.jpg'
+                    photo: 'sutlac.jpg'
                 },
                 {
                     name: 'Künefe',
                     description: 'Peynir ve şerbet ile yapılan ince hamur tatlısı. Tatlı ve çıtır.',
                     price: 18.00,
-                    photo: 'https://cdn.yemek.com/mnresize/1250/833/uploads/2015/05/kunefe-reels-yemekcom-1.jpg'
+                    photo: 'kunefe.jpg'
                 }
             ]
         }
     ];
+
+    const photos = [
+        'baslangiclar.jpg',
+        'tatlilar.jpg',
+        'baklava.jpg',
+        'cacik.jpg',
+        'fava.jpg',
+        'kunefe.jpg',
+        'sutlac.jpg',
+        'kuzu-tandir.jpg',
+        'mantarli-tavuk.jpg',
+        'iskender-kebabi.jpg',
+        'ana-yemekler.jpg',
+        'sigara-boregi.jpg',
+    ]
 
     try {
         // Şirketleri topluca ekle
@@ -136,7 +156,8 @@ const createDummyData = async () => {
         // Her şirket için menü verilerini topluca ekle
         const menus = insertedCompanies.map(company => ({
             company: company._id,
-            categories: categories
+            categories: categories,
+            photos: photos
         }));
         await Menu.insertMany(menus);
         console.log('Menüler topluca eklendi.');

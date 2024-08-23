@@ -338,11 +338,12 @@ header nav .mobile-menu-area .mobile-menu .mobile-menu-links .mobile-menu-link:l
 header nav .user-area {
   padding: 1rem 0.5rem;
   border-start-start-radius: 10px;
+  min-width: 215px;
   border-start-end-radius: 10px;
   position: relative;
   transition: all 0.3s;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
 }
@@ -356,13 +357,19 @@ header nav .user-area .infos {
 header nav .user-area .infos * {
   margin: 0 10px;
 }
-header nav .user-area .infos .user-image {
+header nav .user-area .infos .user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+header nav .user-area .infos .user .user-image {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
-header nav .user-area .infos .user-name {
+header nav .user-area .infos .user .user-name {
   font-size: 2rem;
   font-family: "Gilroy-Bold", sans-serif;
 }
@@ -370,13 +377,13 @@ header nav .user-area .infos .dropdown-icon {
   width: 20px;
   height: 20px;
   transition: all 0.3s;
-  margin: 0 10px 0 0;
 }
 header nav .user-area .dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #e5e7eb;
+  min-width: 215px;
   width: 100%;
   max-height: 0;
   border-end-start-radius: 10px;
@@ -448,6 +455,62 @@ header .overlay-active {
   opacity: 1;
   height: 100000000000000000000000000vh;
 }
+header .qrcode-area {
+  overflow-y: auto;
+  width: 30vw;
+  height: 70vh;
+  position: fixed;
+  background-color: #e5e7eb;
+  border-radius: 10px;
+  z-index: 10000;
+  display: none;
+  padding: 80px 20px 20px 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+header .qrcode-area-active {
+  display: block;
+}
+@media (max-width: 992px) {
+  header .qrcode-area {
+    width: 95vw;
+    height: 60vh;
+  }
+}
+header .qrcode-area input {
+  display: none;
+}
+header .qrcode-area #qrcode-area-close-button {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  cursor: pointer;
+}
+header .qrcode-area #qrcode-area-close-button img {
+  width: 20px;
+  height: 20px;
+}
+header .qrcode-area .img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  user-select: none;
+  cursor: pointer;
+}
+header .qrcode-area .img svg {
+  width: 75%;
+}
+header .qrcode-area p {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 1.5rem;
+}
+header .qrcode-area .download-button {
+  margin-top: 40px;
+  display: block;
+}
 
 main .cafe-home .cards {
   width: 100%;
@@ -476,6 +539,9 @@ main .cafe-home .cards .card {
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+}
+main .cafe-home .cards .card a {
+  width: 100%;
 }
 main .cafe-home .cards .card .card-image {
   border-radius: 10px;
@@ -975,6 +1041,9 @@ main .menu-edit-area form .form-control button {
     width: 960%;
   }
 }
+main .profile-area {
+  margin-top: 180px;
+}
 main .profile-area form .form-button {
   display: flex;
   align-items: flex-end;
@@ -988,6 +1057,11 @@ main .profile-area form .form-button button {
 }
 @media (max-width: 992px) {
   main .profile-area form .form-button button {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) {
+  main .profile-area form .form-button {
     width: 100%;
   }
 }
@@ -1115,6 +1189,15 @@ main .profile-area form .form-controls .inputs .right .input {
   width: 100%;
   font-size: 24px;
 }
+@media (max-width: 992px) and (max-width: 992px) {
+  main .profile-area form .form-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 50px;
+  }
+}
 main .login-area form,
 main .register-area form {
   display: flex;
@@ -1125,24 +1208,6 @@ main .register-area form {
   gap: 10px;
   margin-left: auto;
   margin-right: auto;
-}
-main .login-area form .error-area,
-main .register-area form .error-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 50px;
-  width: 40vw;
-  font-size: 2rem;
-  min-height: 100px;
-  color: red;
-}
-@media (max-width: 992px) {
-  main .login-area form .error-area,
-  main .register-area form .error-area {
-    margin-top: 0;
-  }
 }
 main .login-area form .inputs,
 main .register-area form .inputs {
@@ -1189,6 +1254,23 @@ main .register-area form span {
 main .login-area form span a,
 main .register-area form span a {
   font-size: 1.8rem;
+}
+
+.error-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 40vw;
+  font-size: 2rem;
+  min-height: 100px;
+  color: red;
+}
+@media (max-width: 992px) {
+  .error-area {
+    margin-top: 0;
+    width: 100%;
+  }
 }
 
 footer {
