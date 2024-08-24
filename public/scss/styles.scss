@@ -294,7 +294,10 @@ header {
     pointer-events: none;
     transition: $general-transition;
     opacity: 0;
-    z-index: 9999; // Ensure it's on top
+    z-index: 9999;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.7px);
+    -webkit-backdrop-filter: blur(5.7px);
     &-active {
       pointer-events: all;
       opacity: 1;
@@ -354,7 +357,88 @@ header {
 
 main {
   .cafe-home {
+    #bulk-update-div {
+      width: 100%;
+      text-align: end;
+      padding-right: 20px;
+      .bulk-update {
+        cursor: pointer;
+      }
+      .bulk-update-area {
+        overflow-y: auto;
+        min-width: 50vw;
+        height: 70vh;
+        position: fixed;
+        background-color: $gray-200;
+        border-radius: $rounded;
+        z-index: 10000; // Ensure it's above everything
+        display: none;
+        padding: 80px 20px 20px 20px;
+        @include centered();
+        &-active {
+          display: block;
+        }
+        #bulk-update-area-close-button {
+          position: absolute;
+          top: 25px;
+          right: 25px;
+          cursor: pointer;
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+        .content {
+          text-align: center;
+          .title {
+            font-size: 5rem;
+            font-weight: bold;
+            font-family: $primary-font-Bold;
+          }
+          form {
+            margin-top: 40px;
+            * {
+              font-size: 1.5rem;
+              text-align: center;
+            }
+            .input-group {
+              margin: 25px 0 0 0;
+              @include flex(center, space-between, row);
+              * {
+                margin: 0 5px;
+              }
+              button {
+                width: 100%;
+              }
+              &.info {
+                text-align: center;
+                @include flex(center, center, row);
+              }
+            }
+          }
+        }
+        @include media(large) {
+          width: 95vw;
+          height: 80vh;
+          .content {
+            form{
+              .input-group{
+                @include flex(center, center, column);
+                margin: 15px;
+                *{
+                  margin: 10px;
+                }
+              }
+            }
+            .title {
+              font-size: 3rem;
+            }
+          }
+        }
+      }
+    }
     .cards {
+      margin-top: 20px;
       width: 100%;
       display: grid;
       grid-template-columns: repeat(3, 1fr);

@@ -1,22 +1,67 @@
-        <div class="cafe-home">
-            <% if (menu.categories) { %>
-                <div class="cards">
-                    <% menu.categories.forEach(menu=>{ %>
-                        <div class="card">
-                            <a href="/company/menu/<%= menu._id %>">
-                                <div class="card-image">
-                                    <img src="/uploads/<%= menu.photo?menu.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
-                                </div>
-                                <div class="card-texts">
-                                    <h3 class="card-title">
-                                        <%= menu.name %>
-                                    </h3>
-                                    <p class="card-description"><%= menu.description %></p>
-                                </div>
-                            </a>
+<div class="cafe-home">
+    <% if (menu.categories) { %>
+        <div id="bulk-update-div">
+            <span class="link link-primary bulk-update">Toplu güncelleme</span>
+            <div class="bulk-update-area">
+                <a id="bulk-update-area-close-button">
+                    <img class="bulk-update" src="/images/close.svg" alt="">
+                </a>
+                <div class="content">
+                    <span class="title">Toplu Güncelleme</span>
+                    <form method="post">
+                        <div class="input-group">
+                            <select class="input" name="priceAction" id="priceAction">
+                                <option value="increase" data-name="zam">Zam</option>
+                                <option value="discount" data-name="indirim" selected>İndirim</option>
+                            </select>
+                            <select class="input" name="updateType" id="updateType">
+                                <option value="percentage" data-name='%'>Yüzde</option>
+                                <option value="unit" data-name="₺" selected>Birim</option>
+                            </select>
                         </div>
-                        <% }) %>
-                        
-                    </div>
-                    <% } %>
+                        <div class="input-group">
+                            <input type="text" name="updateThreshold" id="updateThreshold" class="input number-input"
+                                value="200" placeholder="200">
+                            <select class="input" name="thresholdType" id="thresholdType">
+                                <option value="above" data-name='üzerindeki'>Üzerindekilere</option>
+                                <option value="below" data-name="altındaki" selected>Altındakilere</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="updateValue" id="updateValue" class="input number-input" value="50"
+                                placeholder="50">
+                        </div>
+                        <div class="input-group info">
+                            <span>Bu işlemi kaydettikten sonra
+                                <span id="bulk-update-info">200₺ üzerindeki tüm ürünlerinize 50₺ indirim</span>
+                                yapılacaktır.
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <button class="btn btn-primary" id="bulkUpdateSubmitButton">Güncelle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
+        <div class="cards">
+            <% menu.categories.forEach(menu=>{ %>
+                <div class="card">
+                    <a href="/company/menu/<%= menu._id %>">
+                        <div class="card-image">
+                            <img src="/uploads/<%= menu.photo?menu.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
+                        </div>
+                        <div class="card-texts">
+                            <h3 class="card-title">
+                                <%= menu.name %>
+                            </h3>
+                            <p class="card-description">
+                                <%= menu.description %>
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <% }) %>
+        </div>
+        <% } %>
+</div>

@@ -50,7 +50,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 (async () => {
   await connectDB();
-  await createDummyData(); 
+  // await createDummyData(); 
 })();
 
 // Robots.txt yapılandırması

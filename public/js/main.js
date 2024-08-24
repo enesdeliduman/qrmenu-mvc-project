@@ -12,6 +12,16 @@ let newProfilePhoto = document.querySelector('#new-profile-photo');
 let profilePhotoInEditPage = document.querySelector('.profile-photo-img');
 let QRCodeViewLinks = document.querySelectorAll('.qrcode')
 
+let bulkUpdateLinks = document.querySelectorAll('.bulk-update')
+let bulkUpdateArea = document.querySelector('.bulk-update-area')
+let priceAction = document.querySelector('#priceAction')
+let updateType = document.querySelector('#updateType')
+let updateValue = document.querySelector('#updateValue')
+let bulkUpdateInfo = document.querySelector('#bulk-update-info')
+let updateThreshold = document.querySelector('#updateThreshold')
+let thresholdType = document.querySelector('#thresholdType')
+let bulkUpdateSubmitButton = document.querySelector('#bulkUpdateSubmitButton')
+
 // Sağ tık engelle
 // document.oncontextmenu = function () {
 //     return false;
@@ -30,13 +40,21 @@ function init() {
     setupNewProfilePhoto();
     setupNewProduct();
     setupDefPhotos();
+    setupBulkUpdate()
     setupBlockedE()
     setupQRCodeViewers()
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-
-})
+// Random id creators
+function randomId(place) {
+    let newRandomId
+    if (place == "newProduct") {
+        newRandomId = 'newProduct-' + (Math.floor(Math.random() * 900000) + 100000);
+    } else if (place == "uploadNewPhoto") {
+        newRandomId = (Math.floor(Math.random() * 90000000) + 10000000);
+    }
+    return newRandomId
+}
 
 // Qr code view
 function setupQRCodeViewers() {
@@ -66,20 +84,7 @@ function setupQRCodeViewers() {
     }
 }
 
-
-// Random id creators
-function randomId(place) {
-    let newRandomId
-    if (place == "newProduct") {
-        newRandomId = 'newProduct-' + (Math.floor(Math.random() * 900000) + 100000);
-    } else if (place == "uploadNewPhoto") {
-        newRandomId = (Math.floor(Math.random() * 90000000) + 10000000);
-    }
-    return newRandomId
-}
-
 // Block e for number inputs
-
 function setupBlockedE() {
     let numberInputs = document.querySelectorAll(".number-input")
     numberInputs.forEach(numberInput => {
@@ -117,6 +122,55 @@ function setupScrollListener() {
     window.addEventListener('scroll', () => {
         nav.classList.toggle('scrolled', scrollY > 40);
     });
+}
+
+function setupBulkUpdate() {
+    if (bulkUpdateLinks) {
+        bulkUpdateLinks.forEach(bulkUpdateLink => {
+            bulkUpdateLink.addEventListener('click', () => {
+                overlay()
+                bulkUpdateArea.classList.toggle('bulk-update-area-active')
+            })
+        })
+        document.querySelectorAll('#priceAction, #updateType, #thresholdType, #updateValue, #updateThreshold').forEach(element => {
+            element.addEventListener('input', updateInfos);
+        });
+    
+        function updateInfos() {
+            const priceAction = document.getElementById('priceAction');
+            const updateType = document.getElementById('updateType');
+            const thresholdType = document.getElementById('thresholdType');
+            const updateValue = parseFloat(document.getElementById('updateValue').value);
+            const updateThreshold = parseFloat(document.getElementById('updateThreshold').value);
+            const bulkUpdateSubmitButton = document.getElementById('bulkUpdateSubmitButton');
+            const bulkUpdateInfo = document.getElementById('bulk-update-info');
+        
+            // Zam ve indirim işlemleri için geçerlilik kontrolü
+            if (
+                isNaN(updateValue) || updateValue <= 0 || 
+                isNaN(updateThreshold) || updateThreshold <= 0 || 
+                (thresholdType.value === 'below' && updateValue >= updateThreshold) ||
+                (updateType.value === 'percentage' && updateValue > 100 && priceAction.value === 'increase') ||
+                (updateType.value === 'percentage' && updateValue >= 100 && priceAction.value === 'discount')
+            ) {
+                bulkUpdateSubmitButton.disabled = true;
+                bulkUpdateSubmitButton.classList.add('disabled');
+            } else {
+                bulkUpdateSubmitButton.disabled = false;
+                bulkUpdateSubmitButton.classList.remove('disabled');
+        
+                const actionText = priceAction.options[priceAction.selectedIndex].dataset.name;
+                const valueType = updateType.options[updateType.selectedIndex].dataset.name;
+                const thresholdText = thresholdType.options[thresholdType.selectedIndex].dataset.name;
+        
+                const formattedUpdateValue = updateType.value === 'percentage' ? `%${updateValue}` : `${updateValue}₺`;
+        
+                bulkUpdateInfo.textContent = `${updateThreshold}₺ ${thresholdText} tüm ürünlerinize ${formattedUpdateValue} ${actionText}`;
+            }
+        }
+        
+    
+    }
 }
 
 // Toggle user area

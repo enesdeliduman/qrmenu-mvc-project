@@ -72,6 +72,10 @@ h6 {
   background-color: #ff5733;
   color: white;
 }
+.btn.disabled {
+  background-color: #ff8b71;
+  cursor: not-allowed;
+}
 
 .input {
   width: 100%;
@@ -92,6 +96,14 @@ h6 {
 .input textarea {
   resize: none;
   height: 96px;
+}
+
+.link {
+  font-size: 2rem;
+  text-decoration: underline;
+}
+.link-primary {
+  color: #ff5733;
 }
 
 *,
@@ -449,6 +461,9 @@ header .overlay {
   transition: all 0.3s;
   opacity: 0;
   z-index: 9999;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.7px);
+  -webkit-backdrop-filter: blur(5.7px);
 }
 header .overlay-active {
   pointer-events: all;
@@ -512,7 +527,97 @@ header .qrcode-area .download-button {
   display: block;
 }
 
+main .cafe-home #bulk-update-div {
+  width: 100%;
+  text-align: end;
+  padding-right: 20px;
+}
+main .cafe-home #bulk-update-div .bulk-update {
+  cursor: pointer;
+}
+main .cafe-home #bulk-update-div .bulk-update-area {
+  overflow-y: auto;
+  min-width: 50vw;
+  height: 70vh;
+  position: fixed;
+  background-color: #e5e7eb;
+  border-radius: 10px;
+  z-index: 10000;
+  display: none;
+  padding: 80px 20px 20px 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+main .cafe-home #bulk-update-div .bulk-update-area-active {
+  display: block;
+}
+main .cafe-home #bulk-update-div .bulk-update-area #bulk-update-area-close-button {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  cursor: pointer;
+}
+main .cafe-home #bulk-update-div .bulk-update-area #bulk-update-area-close-button img {
+  width: 20px;
+  height: 20px;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content {
+  text-align: center;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content .title {
+  font-size: 5rem;
+  font-weight: bold;
+  font-family: "Gilroy-Bold", sans-serif;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content form {
+  margin-top: 40px;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content form * {
+  font-size: 1.5rem;
+  text-align: center;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content form .input-group {
+  margin: 25px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content form .input-group * {
+  margin: 0 5px;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content form .input-group button {
+  width: 100%;
+}
+main .cafe-home #bulk-update-div .bulk-update-area .content form .input-group.info {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+@media (max-width: 992px) {
+  main .cafe-home #bulk-update-div .bulk-update-area {
+    width: 95vw;
+    height: 80vh;
+  }
+  main .cafe-home #bulk-update-div .bulk-update-area .content form .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 15px;
+  }
+  main .cafe-home #bulk-update-div .bulk-update-area .content form .input-group * {
+    margin: 10px;
+  }
+  main .cafe-home #bulk-update-div .bulk-update-area .content .title {
+    font-size: 3rem;
+  }
+}
 main .cafe-home .cards {
+  margin-top: 20px;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);

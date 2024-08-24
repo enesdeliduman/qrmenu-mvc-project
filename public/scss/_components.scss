@@ -14,10 +14,14 @@
     background-color: $highlight-orange-red;
     color: white;
   }
+  &.disabled{
+    background-color: #ff8b71;
+    cursor: not-allowed;
+  }
 }
 
-.input{
- width: 100%;
+.input {
+  width: 100%;
   padding: 12px 16px;
   border-radius: $rounded;
   color: #000;
@@ -37,4 +41,10 @@
   }
 }
 
-
+.link {
+  font-size: 2rem;
+  text-decoration: underline;
+  &-primary {
+    color: $highlight-orange-red;
+  }
+}

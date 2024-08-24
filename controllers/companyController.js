@@ -7,11 +7,6 @@ module.exports.index = asyncHandler(async (req, res, next) => {
     const menu = await Menu.findOne({
         company: req.session.companyId
     })
-    var locals = {
-        title: 'Page Title',
-        description: 'Page Description',
-        header: 'Page Header'
-    };
     return res.render("company/index", {
         title: `Kare Menüm | ${req.session.name}`,
         company: company,
@@ -19,19 +14,78 @@ module.exports.index = asyncHandler(async (req, res, next) => {
     })
 });
 
+module.exports.bulkCreateAtIndex = asyncHandler(async (req, res, next) => {
+    const {
+        priceAction,
+        updateType,
+        updateThreshold,
+        thresholdType,
+        updateValue
+    } = req.body;
+
+    // Verilerin türlerini kontrol et ve uygun hale getir
+    const updateValueNum = parseInt(updateValue, 10);
+    const threshold = parseFloat(updateThreshold);
+
+    // Fiyat güncelleme fonksiyonu
+    function updatePrice(defPrice) {
+        let price;
+        if (priceAction === 'increase') {
+            if (updateType === 'percentage') {
+                price = defPrice * (1 + updateValueNum / 100);
+            } else if (updateType === 'unit') {
+                price = defPrice + updateValueNum;
+            }
+        } else if (priceAction === 'discount') {
+            if (updateType === 'percentage') {
+                price = defPrice * (1 - updateValueNum / 100);
+            } else if (updateType === 'unit') {
+                price = defPrice - updateValueNum;
+            }
+        }
+        // Minimum 0 olmasını sağla (fiyat negatif olamaz)
+        return Math.max(price, 0);
+    }
+
+    // Şirket menüsünü bulma
+    let menu = await Menu.findOne({ company: req.session.companyId }).exec();
+
+    if (!menu) {
+        return res.status(404).send('Menu not found');
+    }
+
+    const categories = menu.categories;
+
+    categories.forEach(category => {
+        category.products.forEach(product => {
+            if (thresholdType === 'above') {
+                if (product.price > threshold) {
+                    product.price = updatePrice(product.price);
+                }
+            } else if (thresholdType === 'below') {
+                if (product.price < threshold) {
+                    product.price = updatePrice(product.price);
+                }
+            }
+        });
+    });
+
+    await menu.save();
+
+    return res.redirect("/");
+});
+
+
+
+
 module.exports.menuGet = asyncHandler(async (req, res, next) => {
     const categoryId = req.params.id; // `id` -> `categoryId`
     let companyMenu = await Menu.find({ 'company': req.session.companyId });
 
-    // `menu[0].categories` -> `companyMenu[0].categories`
     const categories = companyMenu[0].categories;
-
     let photos = companyMenu[0].photos
-
-    // `menu` -> `selectedCategory`
     let selectedCategory = categories.find(category => category._id == categoryId);
 
-    // Render the view with a more descriptive title and selected category
     return res.render("company/menu", {
         title: `Kare Menüm | ${req.session.name}`,
         selectedCategory: selectedCategory,
@@ -43,7 +97,6 @@ module.exports.menuPost = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     const { categoryName, categoryDescription, categoryDefPhoto, names, descriptions, prices, productDefPhotos } = req.body;
 
-    // Find the menu for the current company
     let menu = await Menu.findOne({ company: req.session.companyId });
     if (!menu) return res.status(404).send({ error: "Menu not found" });
 
