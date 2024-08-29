@@ -1,24 +1,26 @@
-<div class="login-area">
-    <form method="post">
-        <% if (errors && errors.length > 0) { %>
+<div class="login-area container">
+    <form method="post" class="">
+        <% if (errors && errors.length> 0) { %>
             <div class="error-area">
                 <ul>
-                    <% errors.forEach(error => { %>
+                    <% errors.forEach(error=> { %>
                         <li>
                             <%= error %>
                         </li>
-                    <% }) %>
+                        <% }) %>
                 </ul>
             </div>
-        <% } %>
-    <div class="inputs">
-        <input name="emailAddress" class="input" placeholder="Email" type="email" value="<%= formData?formData.emailAddress:""
+            <% } %>
+                <div class="inputs">
+                    <input name="emailAddress" class="input" placeholder="Email" type="email"
+                        value="<%= formData?formData.emailAddress:""
             %>" required>
-        <input name="password" class="input" placeholder="Şifre" type="password" required>
-    </div>
-    <div class="form-control">
-        <button type="submit" class="btn btn-primary">Giriş yap</button>
-    </div>
-    <span>Hesabın yok mu? <b><a href="/auth/register">Kayıt ol</a></b></span>
+                    <input name="password" class="input" placeholder="Şifre" type="password" required>
+                </div>
+                <div class="form-control">
+                    <input type="text" hidden value="selam" name="_csrf">
+                    <button type="submit" class="btn btn-primary">Giriş yap</button>
+                </div>
+                <span>Hesabın yok mu? <b><a up-target="main" href="/auth/register">Kayıt ol</a></b></span>
     </form>
 </div>

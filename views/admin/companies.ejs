@@ -1,0 +1,72 @@
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-12 grid-margin">
+        <div class="form-group">
+            <div class="input-group">
+              <input type="text" name="query" class="form-control" placeholder="Şirket ismi" id="company-search-input" aria-label="Şirket ismi"
+                aria-describedby="basic-addon2">
+              <div class="input-group-append">
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Tüm şirketler</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>İsim</th>
+                    <th>Kategori sayısı</th>
+                    <th>Ürün sayısı</th>
+                    <th>Email</th>
+                    <th>Telefon numarası</th>
+                    <th>Lokasyon</th>
+                    <th>QR kod</th>
+                  </tr>
+                </thead>
+                <% companies.forEach(company=> { %>
+                  <tbody class="company-table-item" data-name="<%=company.companyInfo.name%>">
+                    <tr>
+                      <td>
+                        <%= company.companyInfo.name %>
+                      </td>
+                      <td>
+                        <%= company.totalCategories %>
+                      </td>
+                      <td>
+                        <%= company.totalProducts %>
+                      </td>
+                      <td>
+                        <%= company.companyInfo.emailAddress %>
+                      </td>
+                      <td>
+                        <%= company.companyInfo.telephone %>
+                      </td>
+                      <td>
+                        <%= company.companyInfo.address %>
+                      </td>
+                      <td id="qrcode-img" style="cursor:pointer;"><%- company.companyInfo.qrcode %></td>
+                      <td>
+                        <a up-target="main" href="  /admin/company/delete/<%= company.companyInfo._id %>"
+                          class="badge badge-danger">Sil</a>
+                      </td>
+                      <td>
+                        <a up-target="main" href="  /<%= company.companyInfo.slugfield %>" class="badge badge-warning">Git</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <% }) %>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

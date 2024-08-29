@@ -1,26 +1,28 @@
 // Header Elements
-let body = document.querySelector('body');
-let nav = document.querySelector('nav');
-let userArea = document.querySelector('.user-area');
-let mobileMenuIcons = document.querySelectorAll('.mobile-menu-icon');
-let mobileMenu = document.querySelector('.mobile-menu-area');
-let removeButtons = document.querySelectorAll('.remove-button');
-let foodImages = document.querySelectorAll('.food-image');
-let inModalImageSelectButton = document.querySelector('.in-modal-image-select-button');
-let newProductButton = document.querySelector('.new-product');
-let newProfilePhoto = document.querySelector('#new-profile-photo');
-let profilePhotoInEditPage = document.querySelector('.profile-photo-img');
-let QRCodeViewLinks = document.querySelectorAll('.qrcode')
-
-let bulkUpdateLinks = document.querySelectorAll('.bulk-update')
-let bulkUpdateArea = document.querySelector('.bulk-update-area')
-let priceAction = document.querySelector('#priceAction')
-let updateType = document.querySelector('#updateType')
-let updateValue = document.querySelector('#updateValue')
-let bulkUpdateInfo = document.querySelector('#bulk-update-info')
-let updateThreshold = document.querySelector('#updateThreshold')
-let thresholdType = document.querySelector('#thresholdType')
-let bulkUpdateSubmitButton = document.querySelector('#bulkUpdateSubmitButton')
+var body = document.querySelector('body');
+var nav = document.querySelector('nav');
+var userArea = document.querySelector('.user-area');
+var mobileMenuIcons = document.querySelectorAll('.mobile-menu-icon');
+var mobileMenu = document.querySelector('.mobile-menu-area');
+var removeButtons = document.querySelectorAll('.remove-button');
+var foodImages = document.querySelectorAll('.food-image');
+var inModalImageSelectButton = document.querySelector('.in-modal-image-select-button');
+var newProductButton = document.querySelector('.new-product');
+var newProfilePhoto = document.querySelector('#new-profile-photo');
+var profilePhotoInEditPage = document.querySelector('.profile-photo-img');
+var QRCodeViewLinks = document.querySelectorAll('.qrcode')
+var bulkUpdateLinks = document.querySelectorAll('.bulk-update')
+var bulkUpdateArea = document.querySelector('.bulk-update-area')
+var priceAction = document.querySelector('#priceAction')
+var updateType = document.querySelector('#updateType')
+var updateValue = document.querySelector('#updateValue')
+var bulkUpdateInfo = document.querySelector('#bulk-update-info')
+var updateThreshold = document.querySelector('#updateThreshold')
+var thresholdType = document.querySelector('#thresholdType')
+var bulkUpdateSubmitButton = document.querySelector('#bulkUpdateSubmitButton')
+var companyTableItems = document.querySelectorAll('.company-table-item');
+var categoryCards = document.querySelectorAll('.category-card');
+var mobileMenuLinks = document.querySelectorAll('.mobile-menu-link')
 
 // Sağ tık engelle
 // document.oncontextmenu = function () {
@@ -37,17 +39,21 @@ function init() {
     setupModals();
     setupRemoveButtons();
     setupInModalImageSelectButton();
+    setupMobileMenuLinks();
     setupNewProfilePhoto();
     setupNewProduct();
     setupDefPhotos();
     setupBulkUpdate()
+    setupCategoryCard()
     setupBlockedE()
+    setupCompanySearch()
     setupQRCodeViewers()
 }
 
+
 // Random id creators
 function randomId(place) {
-    let newRandomId
+    var newRandomId
     if (place == "newProduct") {
         newRandomId = 'newProduct-' + (Math.floor(Math.random() * 900000) + 100000);
     } else if (place == "uploadNewPhoto") {
@@ -56,13 +62,38 @@ function randomId(place) {
     return newRandomId
 }
 
+function setupMobileMenuLinks() {
+    mobileMenuLinks.forEach(mobileMenuLink => {
+        mobileMenuLink.addEventListener("click", () => {
+            mobileMenu.classList.remove('mobile-menu-area-active');
+            body.classList.remove('overflow-y');
+        })
+    })
+}
+
+function setupCompanySearch() {
+    var companySearchInput = document.querySelector('#company-search-input');
+    if (companySearchInput && companyTableItems) {
+        companySearchInput.addEventListener("input", () => {
+            var searchValue = companySearchInput.value.trim().toLowerCase();
+            companyTableItems.forEach(item => {
+                var itemName = item.dataset.name.toLowerCase();
+                if (itemName.includes(searchValue) || searchValue === "") {
+                    item.hidden = false;
+                } else {
+                    item.hidden = true;
+                }
+            });
+        });
+    }
+}
+
+
 // Qr code view
 function setupQRCodeViewers() {
-    let qrcodeArea = document.querySelector('.qrcode-area')
-    let qrcodeAreaCloseButton = document.querySelector('#qrcode-area-close-button')
-
+    var qrcodeArea = document.querySelector('.qrcode-area')
+    var qrcodeAreaCloseButton = document.querySelector('#qrcode-area-close-button')
     QRCodeViewLinks = document.querySelectorAll('.qrcode'); // Ögeleri tekrar seçelim
-
     QRCodeViewLinks.forEach(QRCodeViewLink => {
         QRCodeViewLink.addEventListener('click', () => {
             toggle()
@@ -84,14 +115,40 @@ function setupQRCodeViewers() {
     }
 }
 
-// Block e for number inputs
+function setupCategoryCard() {
+    const categoryCards = document.querySelectorAll('.category-card');
+    
+    categoryCards.forEach(categoryCard => {
+        categoryCard.addEventListener('click', () => {
+            const content = categoryCard.querySelector('.category-card-content');
+            const isActive = categoryCard.classList.contains('category-card-active');
+
+            // Kapalı olan diğer içerikleri kapat
+            document.querySelectorAll('.category-card').forEach(card => {
+                const cardContent = card.querySelector('.category-card-content');
+                if (card !== categoryCard) {
+                    card.classList.remove('category-card-active');
+                    cardContent.classList.remove('category-card-content-active');
+                }
+            });
+
+            // Tıklanan kartın içeriğini aç veya kapat
+            categoryCard.classList.toggle('category-card-active', !isActive);
+            content.classList.toggle('category-card-active', !isActive);
+        });
+    });
+}
+
+
+
+
 function setupBlockedE() {
-    let numberInputs = document.querySelectorAll(".number-input")
+    var numberInputs = document.querySelectorAll(".number-input")
     numberInputs.forEach(numberInput => {
         numberInput.addEventListener("keydown", (e) => {
-            const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","];
-            const deleteKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight"];
-            if (deleteKeys.includes(e.key)) {
+            var validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","];
+            var devareKeys = ["Backspace", "Devare", "ArrowLeft", "ArrowRight"];
+            if (devareKeys.includes(e.key)) {
                 return;
             }
             if (!validKeys.includes(e.key)) {
@@ -107,7 +164,7 @@ function setupBlockedE() {
 
 // Setup default photos
 function setupDefPhotos(dataFor, url) {
-    let defPhotos = document.querySelectorAll('.def-photo');
+    var defPhotos = document.querySelectorAll('.def-photo');
     if (defPhotos) {
         defPhotos.forEach(defPhoto => {
             if (defPhoto.dataset.for === dataFor) {
@@ -135,43 +192,49 @@ function setupBulkUpdate() {
         document.querySelectorAll('#priceAction, #updateType, #thresholdType, #updateValue, #updateThreshold').forEach(element => {
             element.addEventListener('input', updateInfos);
         });
-    
         function updateInfos() {
-            const priceAction = document.getElementById('priceAction');
-            const updateType = document.getElementById('updateType');
-            const thresholdType = document.getElementById('thresholdType');
-            const updateValue = parseFloat(document.getElementById('updateValue').value);
-            const updateThreshold = parseFloat(document.getElementById('updateThreshold').value);
-            const bulkUpdateSubmitButton = document.getElementById('bulkUpdateSubmitButton');
-            const bulkUpdateInfo = document.getElementById('bulk-update-info');
-        
-            // Zam ve indirim işlemleri için geçerlilik kontrolü
-            if (
-                isNaN(updateValue) || updateValue <= 0 || 
-                isNaN(updateThreshold) || updateThreshold <= 0 || 
-                (thresholdType.value === 'below' && updateValue >= updateThreshold) ||
-                (updateType.value === 'percentage' && updateValue > 100 && priceAction.value === 'increase') ||
-                (updateType.value === 'percentage' && updateValue >= 100 && priceAction.value === 'discount')
-            ) {
+            var priceAction = document.getElementById('priceAction');
+            var updateType = document.getElementById('updateType');
+            var thresholdType = document.getElementById('thresholdType');
+            var updateValue = parseFloat(document.getElementById('updateValue').value);
+            var updateThreshold = parseFloat(document.getElementById('updateThreshold').value);
+            var bulkUpdateSubmitButton = document.getElementById('bulkUpdateSubmitButton');
+            var bulkUpdateInfo = document.getElementById('bulk-update-info');
+
+            // Geçerlilik kontrolü
+            var isInvalidValue = isNaN(updateValue) || updateValue <= 0;
+            var isInvalidThreshold = isNaN(updateThreshold) || updateThreshold <= 0;
+            var isInvalidDiscount = (priceAction.value === 'discount' && updateType.value === 'percentage' && updateValue >= 100);
+            var isInvalidThresholdCondition = (thresholdType.value === 'below' && updateValue >= updateThreshold);
+
+            if (isInvalidValue || isInvalidThreshold || isInvalidDiscount || isInvalidThresholdCondition) {
                 bulkUpdateSubmitButton.disabled = true;
                 bulkUpdateSubmitButton.classList.add('disabled');
             } else {
                 bulkUpdateSubmitButton.disabled = false;
                 bulkUpdateSubmitButton.classList.remove('disabled');
-        
-                const actionText = priceAction.options[priceAction.selectedIndex].dataset.name;
-                const valueType = updateType.options[updateType.selectedIndex].dataset.name;
-                const thresholdText = thresholdType.options[thresholdType.selectedIndex].dataset.name;
-        
-                const formattedUpdateValue = updateType.value === 'percentage' ? `%${updateValue}` : `${updateValue}₺`;
-        
+
+                var actionText = priceAction.options[priceAction.selectedIndex].dataset.name;
+                var valueType = updateType.options[updateType.selectedIndex].dataset.name;
+                var thresholdText = thresholdType.options[thresholdType.selectedIndex].dataset.name;
+
+                var formattedUpdateValue = updateType.value === 'percentage' ? `%${updateValue}` : `${updateValue}₺`;
+
                 bulkUpdateInfo.textContent = `${updateThreshold}₺ ${thresholdText} tüm ürünlerinize ${formattedUpdateValue} ${actionText}`;
             }
         }
-        
-    
+
+
     }
 }
+
+
+
+
+// 15
+// 10
+// 12
+
 
 // Toggle user area
 function setupUserAreaToggle() {
@@ -197,18 +260,18 @@ function setupMobileMenuToggle() {
 function setupNewProfilePhoto() {
     if (newProfilePhoto) {
         newProfilePhoto.addEventListener('change', () => {
-            const file = newProfilePhoto.files[0];
+            var file = newProfilePhoto.files[0];
             if (file) {
                 // Dosya ismini değiştir
-                const newFileName = 'new-profile-photo-' + randomId('uploadNewPhoto') + '.' + file.name.split('.').pop();
+                var newFileName = 'new-profile-photo-' + randomId('uploadNewPhoto') + '.' + file.name.split('.').pop();
 
-                const newFile = new File([file], newFileName, { type: file.type });
+                var newFile = new File([file], newFileName, { type: file.type });
 
-                const dataTransfer = new DataTransfer();
+                var dataTransfer = new DataTransfer();
                 dataTransfer.items.add(newFile);
                 newProfilePhoto.files = dataTransfer.files;
 
-                const reader = new FileReader();
+                var reader = new FileReader();
                 reader.onload = (event) => {
                     profilePhotoInEditPage.src = event.target.result;
                 };
@@ -222,7 +285,7 @@ function setupNewProfilePhoto() {
 
 // Setup photo change buttons
 function setupPhotoChangeButtons() {
-    const photoChangeButtons = document.querySelectorAll('.photoChangeInput');
+    var photoChangeButtons = document.querySelectorAll('.photoChangeInput');
     photoChangeButtons.forEach(button => {
         button.addEventListener('change', () => {
             overlay();
@@ -233,7 +296,7 @@ function setupPhotoChangeButtons() {
 
 // Setup modals
 function setupModals() {
-    const modals = document.querySelectorAll('.modal');
+    var modals = document.querySelectorAll('.modal');
     modals.forEach(modal => {
         setupModalImages(modal);
         setupNewImageInput(modal);
@@ -242,7 +305,7 @@ function setupModals() {
 
 // Setup modal images
 function setupModalImages(modal) {
-    const modalImages = modal.querySelectorAll('.modal-image');
+    var modalImages = modal.querySelectorAll('.modal-image');
     modalImages.forEach(image => {
         addImageClickListener(image);
     });
@@ -251,8 +314,8 @@ function setupModalImages(modal) {
 // Add click listener to image
 function addImageClickListener(imageElement) {
     imageElement.addEventListener('click', () => {
-        const modal = imageElement.closest('.modal');
-        const modalImages = modal.querySelectorAll('.modal-image');
+        var modal = imageElement.closest('.modal');
+        var modalImages = modal.querySelectorAll('.modal-image');
 
         modalImages.forEach(img => img.classList.remove('modal-image-selected'));
         imageElement.classList.toggle('modal-image-selected');
@@ -261,8 +324,8 @@ function addImageClickListener(imageElement) {
 
 // Setup new image input
 function setupNewImageInput(modal) {
-    const newImageInputs = modal.querySelectorAll('.newImageInput');
-    let allFiles = [];
+    var newImageInputs = modal.querySelectorAll('.newImageInput');
+    var allFiles = [];
 
     newImageInputs.forEach(newImageInput => {
         newImageInput.addEventListener('click', (e) => {
@@ -273,20 +336,20 @@ function setupNewImageInput(modal) {
         });
 
         newImageInput.addEventListener('change', (e) => {
-            const files = newImageInput.files;
+            var files = newImageInput.files;
             if (files.length > 0) {
                 Array.from(files).forEach(file => {
-                    const reader = new FileReader();
+                    var reader = new FileReader();
                     reader.onload = (e) => {
-                        const img = new Image();
+                        var img = new Image();
                         img.onload = function () {
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
+                            var canvas = document.createElement('canvas');
+                            var ctx = canvas.getContext('2d');
 
-                            const maxWidth = 1920;
-                            const maxHeight = 1080;
-                            let width = img.width;
-                            let height = img.height;
+                            var maxWidth = 1920;
+                            var maxHeight = 1080;
+                            var width = img.width;
+                            var height = img.height;
 
                             if (width > height) {
                                 if (width > maxWidth) {
@@ -304,28 +367,28 @@ function setupNewImageInput(modal) {
                             canvas.height = height;
                             ctx.drawImage(img, 0, 0, width, height);
 
-                            const targetSizeKB = 750;
-                            const qualityStep = 0.05;
-                            let quality = 1.0;
-                            let attemptCount = 0;
+                            var targetSizeKB = 750;
+                            var qualityStep = 0.05;
+                            var quality = 1.0;
+                            var attemptCount = 0;
 
                             function adjustQuality() {
                                 canvas.toBlob(function (blob) {
-                                    const fileSizeKB = blob.size / 1024;
+                                    var fileSizeKB = blob.size / 1024;
 
                                     // Convert Blob to File
-                                    const fileName = 'new-product-photo-' + randomId("uploadNewPhoto") + '.jpg';
-                                    const file = new File([blob], fileName, { type: 'image/jpeg' });
+                                    var fileName = 'new-product-photo-' + randomId("uploadNewPhoto") + '.jpg';
+                                    var file = new File([blob], fileName, { type: 'image/jpeg' });
 
-                                    const outputImg = document.createElement('img');
+                                    var outputImg = document.createElement('img');
                                     outputImg.src = e.target.result;
                                     outputImg.classList.add('modal-image');
                                     outputImg.dataset.for = newImageInput.dataset.for;
                                     outputImg.dataset.name = fileName;
 
-                                    const targetImagesArea = modal.querySelector(`.images-area[data-for="${newImageInput.dataset.for}"]`);
+                                    var targetImagesArea = modal.querySelector(`.images-area[data-for="${newImageInput.dataset.for}"]`);
                                     if (targetImagesArea) {
-                                        const secondChild = targetImagesArea.children[1] || null;
+                                        var secondChild = targetImagesArea.children[1] || null;
                                         targetImagesArea.insertBefore(outputImg, secondChild);
                                         addImageClickListener(outputImg);
                                     }
@@ -333,7 +396,7 @@ function setupNewImageInput(modal) {
                                     allFiles.push(file);
 
                                     // Update DataTransfer files
-                                    const dataTransfer = new DataTransfer();
+                                    var dataTransfer = new DataTransfer();
                                     allFiles.forEach(f => dataTransfer.items.add(f));
                                     newImageInput.files = dataTransfer.files;
 
@@ -358,13 +421,14 @@ function setupNewImageInput(modal) {
 
 // Setup remove buttons
 function setupRemoveButtons() {
-    const removeButtons = document.querySelectorAll('.remove-button');
+    var removeButtons = document.querySelectorAll('.remove-button');
     removeButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             foodImages.forEach(image => {
                 if (image.dataset.for === button.dataset.for) {
                     image.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmvxUtkhdIZbvRg2WRHHYLRdFV9IIy9CPfxQ&s';
+                    setupDefPhotos(image.dataset.for, 'notPhoto.png');
                 }
             });
         });
@@ -375,12 +439,12 @@ function setupRemoveButtons() {
 function setupInModalImageSelectButton() {
     if (inModalImageSelectButton) {
         inModalImageSelectButton.addEventListener('click', () => {
-            const foodImages = document.querySelectorAll('.food-image');
+            var foodImages = document.querySelectorAll('.food-image');
             foodImages.forEach(foodImage => {
                 if (foodImage.dataset.for === inModalImageSelectButton.dataset.for) {
-                    const modal = document.querySelector(`.modal`);
+                    var modal = document.querySelector(`.modal`);
                     if (modal) {
-                        const selectedImage = modal.querySelector('.modal-image-selected');
+                        var selectedImage = modal.querySelector('.modal-image-selected');
                         if (selectedImage) {
                             foodImage.src = selectedImage.src;
                             modalToggle();
@@ -396,14 +460,14 @@ function setupInModalImageSelectButton() {
 
 // Sayfa yüklendiğinde çalışacak kod
 document.addEventListener('DOMContentLoaded', function () {
-    const qrcodeImgDiv = document.getElementById('qrcode-img');
+    var qrcodeImgDiv = document.getElementById('qrcode-img');
 
     qrcodeImgDiv.addEventListener('click', function () {
-        const svgElement = qrcodeImgDiv.innerHTML.trim();
-        const svgBlob = new Blob([svgElement], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
+        var svgElement = qrcodeImgDiv.innerHTML.trim();
+        var svgBlob = new Blob([svgElement], { type: 'image/svg+xml;charset=utf-8' });
+        var url = URL.createObjectURL(svgBlob);
 
-        const downloadLink = document.createElement('a');
+        var downloadLink = document.createElement('a');
         downloadLink.href = url;
         downloadLink.download = 'qrcode.svg';
         document.body.appendChild(downloadLink);
@@ -422,30 +486,30 @@ document.addEventListener('DOMContentLoaded', function () {
 function setupNewProduct() {
     if (newProductButton) {
         newProductButton.addEventListener('click', () => {
-            let id = randomId("newProduct")
+            var id = randomId("newProduct")
             if (document.querySelector(`[data-for="${id}"]`)) {
-                let id = randomId("newProduct")
+                var id = randomId("newProduct")
             } else {
-                const productsEditArea = document.querySelector('.products-edit-area');
+                var productsEditArea = document.querySelector('.products-edit-area');
                 if (productsEditArea) {
-                    const secondChild = productsEditArea.children[1] || null;
+                    var secondChild = productsEditArea.children[1] || null;
 
-                    const newProductDiv = document.createElement('div');
+                    var newProductDiv = document.createElement('div');
                     newProductDiv.classList.add('product-edit-area');
 
-                    const productPhotoDiv = document.createElement('div');
+                    var productPhotoDiv = document.createElement('div');
                     productPhotoDiv.classList.add('product-photo');
 
-                    const imageDiv = document.createElement('div');
+                    var imageDiv = document.createElement('div');
                     imageDiv.classList.add('image');
 
-                    const imgElement = document.createElement('img');
+                    var imgElement = document.createElement('img');
                     imgElement.classList.add('food-image');
                     imgElement.dataset.for = id;
                     imgElement.src = '/uploads/notPhoto.png';
                     imageDiv.appendChild(imgElement);
 
-                    const defPhotoInput = document.createElement('input')
+                    var defPhotoInput = document.createElement('input')
                     defPhotoInput.type = 'hidden';
                     defPhotoInput.name = `${id}[productDefPhoto]`
                     defPhotoInput.classList.add('def-photo')
@@ -453,17 +517,17 @@ function setupNewProduct() {
                     defPhotoInput.value = 'notPhoto.png'
                     imageDiv.appendChild(defPhotoInput);
 
-                    const buttonsDiv = document.createElement('div');
+                    var buttonsDiv = document.createElement('div');
                     buttonsDiv.classList.add('buttons');
 
-                    const changeButtonLabel = document.createElement('label');
+                    var changeButtonLabel = document.createElement('label');
                     changeButtonLabel.htmlFor = 'modal'; // Assuming "modal" is the ID of a modal element
                     changeButtonLabel.dataset.for = id; // Assuming a unique identifier for the product
                     changeButtonLabel.classList.add('changeButton', 'btn', 'btn-primary');
                     changeButtonLabel.textContent = 'Değiştir'; // "Değiştir" means "Change" in Turkish
                     buttonsDiv.appendChild(changeButtonLabel);
 
-                    const removeButtonLink = document.createElement('a');
+                    var removeButtonLink = document.createElement('a');
                     removeButtonLink.href = '#';
                     removeButtonLink.classList.add('remove-button', 'btn', 'btn-primary');
                     removeButtonLink.dataset.for = id;
@@ -474,24 +538,24 @@ function setupNewProduct() {
                     productPhotoDiv.appendChild(buttonsDiv);
 
                     // Ürün girişleri bölümü oluştur
-                    const productInputsDiv = document.createElement('div');
+                    var productInputsDiv = document.createElement('div');
                     productInputsDiv.classList.add('product-inputs');
 
-                    const nameInput = document.createElement('input');
+                    var nameInput = document.createElement('input');
                     nameInput.classList.add('name', 'input');
                     nameInput.name = `${id}[name]`;
                     nameInput.placeholder = 'Ürün ismi';
                     nameInput.required = true
                     productInputsDiv.appendChild(nameInput);
 
-                    const descriptionTextarea = document.createElement('textarea');
+                    var descriptionTextarea = document.createElement('textarea');
                     descriptionTextarea.classList.add('description', 'input', 'textarea');
                     descriptionTextarea.name = `${id}[description]`;
                     descriptionTextarea.placeholder = 'Ürün açıklaması';
                     descriptionTextarea.required = true
                     productInputsDiv.appendChild(descriptionTextarea);
 
-                    const priceInput = document.createElement('input');
+                    var priceInput = document.createElement('input');
                     priceInput.classList.add('price', 'input');
                     priceInput.name = `${id}[price]`;
                     priceInput.placeholder = 'Ürün fiyatı';
@@ -524,7 +588,7 @@ function setupNewProduct() {
 
 // Toggle modal visibility
 function modalToggle() {
-    const modal = document.querySelector(`.modal`);
+    var modal = document.querySelector(`.modal`);
     if (modal) {
         modal.classList.toggle('modal-active');
     }
@@ -532,7 +596,7 @@ function modalToggle() {
 
 // Toggle overlay visibility
 function overlay() {
-    const overlayElement = document.querySelector('.overlay');
+    var overlayElement = document.querySelector('.overlay');
     if (overlayElement) {
         overlayElement.classList.toggle('overlay-active');
         body.classList.toggle('overflow-y');
@@ -540,9 +604,9 @@ function overlay() {
 }
 
 
-const modalButtons = document.querySelectorAll(".changeButton");
-const modal = document.querySelector(".modal");
-const imagesInModal = document.querySelectorAll(".modal-image")
+var modalButtons = document.querySelectorAll(".changeButton");
+var modal = document.querySelector(".modal");
+var imagesInModal = document.querySelectorAll(".modal-image")
 
 modalButtons.forEach(modalButton => {
     modalButton.addEventListener("click", () => {

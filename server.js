@@ -10,7 +10,11 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const locals = require('./middlewares/locals');
 const bodyParser = require('body-parser');
-
+const connectDB = require("./Data/databaseConnect");
+const createDummyData = require("./Data/dummyData");
+const routers = require("./routers/index");
+const ErrorHandler = require("./middlewares/ErrorHandler");
+const MetaTag = require('express-metatag');
 
 app.use(expressLayouts);
 app.use((req, res, next) => {
@@ -18,7 +22,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(compression())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use(helmet());
@@ -32,39 +35,31 @@ app.use(session({
 }));
 
 app.use(locals);
-// app.use(csurf()); // CSRF koruması, ihtiyaca göre aktif edilebilir
 
-const connectDB = require("./Data/databaseConnect");
-const createDummyData = require("./Data/dummyData");
-const routers = require("./routers/index");
-const ErrorHandler = require("./middlewares/ErrorHandler");
-
-app.use(routers);
-app.use(ErrorHandler);
+// app.use(csurf());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.use(routers);
+app.use(ErrorHandler);
+app.use((req, res, next) => {
+  res.redirect('/404');
+});
+
 
 (async () => {
   await connectDB();
-  // await createDummyData(); 
+  // await createDummyData();
 })();
 
-// Robots.txt yapılandırması
-const robots = require('express-robots-txt');
-
-// app.use(robots({
-//   UserAgent: '*',
-//   Disallow: '/',
-//   CrawlDelay: '5',
-//   Sitemap: 'https://nowhere.com/sitemap.xml',
-// }));
 
 // Sunucuyu başlatma
-const port = process.env.PORT || 3000;
+const port = process.env.port || 3000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

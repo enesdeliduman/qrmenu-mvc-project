@@ -1,5 +1,5 @@
-<div class="register-area">
-    <form method="post">
+<div class="register-area container">
+    <form method="post" hx-post>
         <% if (errors && errors.length> 0) { %>
             <div class="error-area">
                 <ul>
@@ -21,8 +21,9 @@
                     <input name="password" class="input" placeholder="Şifre" type="password" required>
                 </div>
                 <div class="form-control">
+                    <input type="text" hidden value="selam" name="_csrf">
                     <button type="submit" class="btn btn-primary">Giriş yap</button>
                 </div>
-                <span>Zaten hesabın var mı? <b><a href="./login.html">Giriş yap</a></b></span>
+                <span>Zaten hesabın var mı? <b><a up-target="main" href="  /auth/login">Giriş yap</a></b></span>
     </form>
 </div>

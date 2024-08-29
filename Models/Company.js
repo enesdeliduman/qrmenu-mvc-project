@@ -27,7 +27,7 @@ const CompanySchema = new Schema({
     password: {
         type: String,
         required: [true, "Lütfen şifrenizi giriniz"],
-        minLength: [4, "Şifrenizin uzunluğu en az 4 karakter olmalıdır"],
+        minLength: [6, "Şifrenizin uzunluğu en az 6 karakter olmalıdır"],
         select: false
     },
     telephone: {
@@ -65,9 +65,8 @@ const CompanySchema = new Schema({
     address: {
         type: String
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
+    visitor: {
+        type: Number
     },
     isConfirm: {
         type: Boolean,
@@ -124,7 +123,7 @@ CompanySchema.pre('save', async function (next) {
                 newSlug = `${baseSlug}-${suffix}`;
             }
             this.slugfield = newSlug;
-            const qrCodeData = await QRCode.toString(`${process.env.SITE_URL}/${this.slugfield}`, { type: 'svg' });
+            const qrCodeData = await QRCode.toString(`${process.env.SITE_URL}/menu/${this.slugfield}`, { type: 'svg' });
             this.qrcode = qrCodeData;
 
         } catch (err) {

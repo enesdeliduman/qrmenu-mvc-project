@@ -1,0 +1,56 @@
+<div class="menu-area">
+    <div class="categories-bar">
+        <div class="swiper categories">
+            <div class="swiper-wrapper">
+                <% categoryNames.forEach(categoryName=> { %>
+                    <div class="swiper-slide swiper-slide-category">
+                        <a href="#<%= categoryName %>">
+                            <%= categoryName %>
+                        </a>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </div>
+    <div class="categories">
+        <% categories.forEach(category=> { %>
+            <div class="category-card" id="<%=category.name%>">
+                <div class="category-content">
+                    <div class="image">
+                        <img src="/uploads/<%=category.photo%>" alt="">
+                    </div>
+                    <div class="texts">
+                        <div class="top">
+                            <p class="title">
+                                <%=category.name%>
+                            </p>
+                            <img src="/images/bottom-arrow.svg" alt="" class="icon">
+                        </div>
+                        <p class="description">
+                            <%=category.description%>
+                        </p>
+                    </div>
+                </div>
+                <div class="category-card-content">
+                    <div class="products">
+                        <% category.products.forEach(product=> { %>
+                            <div class="product">
+                                <div class="image">
+                                    <img src="/uploads/<%=product.photo%>" alt="">
+                                </div>
+                                <div class="texts">
+                                    <div class="titleAndPrice">
+                                        <span class="title"><%= product.name %></span>
+                                        <span class="price"><%= product.price %>₺</span>
+                                         
+                                    </div>
+                                    <p class="description"><%= product.description %></p>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+    </div>
+</div>

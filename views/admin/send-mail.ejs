@@ -1,0 +1,24 @@
+<div class="main-panel">
+  <div class="content-wrapper">
+      <div class="row">
+          <div class="col-12 grid-margin">
+              <div class="card">
+                  <div class="card-body">
+                      <h4 class="card-title">Toplu mail gönderimi</h4>
+                      <form class="forms-sample" style="margin-top:50px;" method="post" hx-post>
+                          <div class="form-group">
+                              <input type="text" class="form-control" name="subject" placeholder="Konu">
+                          </div>
+                          <div class="form-group">
+                              <textarea class="form-control" name="message" rows="10"
+                                  placeholder="Mesajınız"></textarea>
+                          </div>
+                          <input type="text" hidden value="selam" name="_csrf">
+                          <button type="submit" class="btn btn-primary btn-lg btn-block w-100">Gönder</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

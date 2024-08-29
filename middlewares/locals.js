@@ -7,6 +7,7 @@ module.exports = (req, res, next) => {
     res.locals.telephone = req.session.telephone;
     res.locals.socialMedia = req.session.socialMedia;
     res.locals.address = req.session.address;
+    res.locals.role = req.session.role;
     res.locals.photo = req.session.photo;
     next()
 }

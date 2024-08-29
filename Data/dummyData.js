@@ -4,12 +4,20 @@ const QRCode = require("qrcode");
 
 // Şirket ve Menü şemalarını içe aktar
 const Company = require('../Models/Company');  // Şirket şeması
+const Admin = require('../Models/Admin');  // Şirket şeması
 const Menu = require('../Models/Menu');        // Menü şeması
 
 
 
 // Dummy veri oluşturma
 const createDummyData = async () => {
+    // const admin = [
+    //     {
+    //         username: "root",
+    //         password: await bcrypt.hash("root", 10)
+    //     }
+    // ]
+
     const companies = [
         {
             name: 'Alpha Şirketi',
@@ -17,7 +25,8 @@ const createDummyData = async () => {
             password: await bcrypt.hash("root", 10),
             telephone: 1234567890,
             photo: 'alpha-logo.jpg',
-            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "alpha-sirketi", { type: 'svg' }),
+            slugfield: 'alpha-sirketi',
+            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "menu/alpha-sirketi", { type: 'svg' }),
             views: 150,
             address: 'Alpha Şehri',
             isAdmin: true,
@@ -31,7 +40,8 @@ const createDummyData = async () => {
             password: await bcrypt.hash("root", 10),
             telephone: 2345678901,
             photo: 'beta-logo.jpg',
-            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "beta-sirketi", { type: 'svg' }),
+            slugfield: 'beta-sirketi',
+            qrcode: await QRCode.toString(process.env.SITE_URL + "/menu/" + "beta-sirketi", { type: 'svg' }),
             views: 200,
             address: 'Beta Şehri',
             isAdmin: false,
@@ -45,7 +55,8 @@ const createDummyData = async () => {
             password: await bcrypt.hash("root", 10),
             telephone: 3456789012,
             photo: 'gamma-logo.png',
-            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "gamma-sirketi", { type: 'svg' }),
+            slugfield: 'gamma-sirketi',
+            qrcode: await QRCode.toString(process.env.SITE_URL + "/" + "menu/gamma-sirketi", { type: 'svg' }),
             views: 250,
             address: 'Gamma Şehri',
             isAdmin: false,
@@ -152,6 +163,10 @@ const createDummyData = async () => {
         // Şirketleri topluca ekle
         const insertedCompanies = await Company.insertMany(companies);
         console.log('Şirketler topluca eklendi.');
+        
+        await Admin.insertMany([{ emailAddress: "root@root.com", password: await bcrypt.hash("root", 10) }])
+        console.log('Admin eklendi.');
+        
 
         // Her şirket için menü verilerini topluca ekle
         const menus = insertedCompanies.map(company => ({

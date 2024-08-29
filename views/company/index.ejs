@@ -1,4 +1,4 @@
-<div class="cafe-home">
+<div class="cafe-home container">
     <% if (menu.categories) { %>
         <div id="bulk-update-div">
             <span class="link link-primary bulk-update">Toplu güncelleme</span>
@@ -8,7 +8,7 @@
                 </a>
                 <div class="content">
                     <span class="title">Toplu Güncelleme</span>
-                    <form method="post">
+                    <form method="post" up-submit up-target="content">
                         <div class="input-group">
                             <select class="input" name="priceAction" id="priceAction">
                                 <option value="increase" data-name="zam">Zam</option>
@@ -38,6 +38,7 @@
                             </span>
                         </div>
                         <div class="input-group">
+                            <input type="text" hidden value="selam" name="_csrf">
                             <button class="btn btn-primary" id="bulkUpdateSubmitButton">Güncelle</button>
                         </div>
                     </form>
@@ -45,9 +46,26 @@
             </div>
         </div>
         <div class="cards">
+            <div class="card new-category">
+                <a up-target="main" href="/company/new-menu" hx-get="/company/new-menu" hx-target='#content'
+                    hx-push-url='true'>
+                    <div class="card-image">
+                        <img src="/images/plus.svg" />
+                    </div>
+                    <div class="card-texts">
+                        <h3 class="card-title">
+                            Yeni Kategori
+                        </h3>
+                        <p class="card-description">
+                            Yeni bir kategori eklemek için hemen buraya tıklayın!
+                        </p>
+                    </div>
+                </a>
+            </div>
             <% menu.categories.forEach(menu=>{ %>
                 <div class="card">
-                    <a href="/company/menu/<%= menu._id %>">
+                    <a up-target="main" href="  /company/menu/<%= menu._id %>" hx-get="/company/menu/<%= menu._id %>"
+                        hx-target='#content' hx-push-url='true'>
                         <div class="card-image">
                             <img src="/uploads/<%= menu.photo?menu.photo : "https://kanal60.com/tema/genel/img/resim_yok.jpg" %>">
                         </div>

@@ -1,29 +1,35 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="TR" html data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="<%= metaTags.title %>">
+    <meta property="og:description" content="<%= metaTags.description %>">
+    <meta property="og:image" content="<%= metaTags.image %>">
+    <meta property="og:url" content="<%= metaTags.url %>">
+    <meta name="description" content="<%= metaTags.description %>">
+    <meta name="keywords" content="<%= metaTags.keywords.join(', ') %>">
+    <link rel="canonical" href="<%= metaTags.url %>" />
     <title>
         <%= title %>
     </title>
-    <!-- <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/site.css">
-    <link rel="stylesheet" href="/css/swiper-bundle.css"> -->
+    <link rel="stylesheet" href="/style/swiper-bundle.css">
     <link rel="stylesheet" href="/style/styles.css">
-
+    <link rel="shortcut icon" href="/images/karekod.svg" type="image/x-icon">
+    
 </head>
 
 <body>
     <header>
         <nav>
             <div class="nav-logo">
-                <a href="/" class="logo">Kare Menüm</a>
+                <h1><a up-target="main" href="/" class="logo">Kare Menüm</a></h1>
             </div>
             <div class="nav-links">
                 <% if (!isAuth) { %>
-                    <a href="/auth/login" class="nav-link btn">Giriş yap</a>
-                    <a href="/auth/register" class="nav-link btn btn-primary">Kayıt ol</a>
+                    <a up-target="main" href="/auth/login" class="nav-link btn">Giriş yap</a>
+                    <a up-target="main" href="/auth/register" class="nav-link btn btn-primary">Kayıt ol</a>
                     <% } %>
             </div>
             <!-- Mobile Menu -->
@@ -41,18 +47,18 @@
                         <% } %>
                             <div class="mobile-menu-links">
                                 <% if (!isAuth) { %>
-                                    <a class="mobile-menu-link" href="/auth/login">
+                                    <a class="mobile-menu-link" up-target="main" href="/auth/login">
                                         <p>Giriş yap</p>
                                     </a>
-                                    <a class="mobile-menu-link" href="/auth/register">
+                                    <a class="mobile-menu-link" up-target="main" href="/auth/register">
                                         <p>Kayıt ol</p>
                                     </a>
                                     <% } else{%>
-                                        <a class="mobile-menu-link qrcode" href="#">
+                                        <a class="mobile-menu-link qrcode" up-target="main" href="#">
                                             <img src="/images/karekod.svg" alt="">
                                             <p>Karekodum</p>
                                         </a>
-                                        <a class="mobile-menu-link" href="/company/profile">
+                                        <a class="mobile-menu-link" up-target="main" href="/company/profile">
                                             <img src="/images/profile.svg" alt="">
                                             <p>Profilim</p>
                                         </a>
@@ -76,11 +82,11 @@
                         <img class="dropdown-icon" src="/images/bottom-arrow.svg" alt="">
                     </div>
                     <div class="dropdown">
-                        <a href="#" class="qrcode">
+                        <a up-target="main" href="#" class="qrcode">
                             <img src="/images/karekod.svg" alt="">
                             <p>Karekodum</p>
                         </a>
-                        <a href="/company/profile">
+                        <a up-target="main" href="/company/profile">
                             <img src="/images/profile.svg" alt="">
                             <p>Profilim</p>
                         </a>
@@ -106,28 +112,30 @@
             <% } %>
     </header>
 
-    <main class="container">
+    <main id="main">
         <%- body %>
     </main>
 
     <footer>
-        <p>Devoloped by <b><a href="https://www.enesdeliduman.com">Enes DELIDUMAN</a></b></p>
+        <p>Devoloped by <b><a up-target="main" href="https://www.enesdeliduman.com">Enes DELIDUMAN</a></b></p>
         <div class="footer-links">
-            <a href="https://www.instagram.com.com/enesdman_" target="_blank">
+            <a up-target="main" href="https://www.instagram.com.com/enesdman_" target="_blank">
                 <img src="/images/instagram.svg" alt="">
             </a>
-            <a href="https://www.github.com/enesdman0" target="_blank">
+            <a up-target="main" href="https://www.github.com/enesdman0" target="_blank">
                 <img src="/images/github.svg" alt="">
             </a>
-            <a href="https://www.linkedin.com/in/enesdeliduman" target="_blank">
+            <a up-target="main" href="https://www.linkedin.com/in/enesdeliduman" target="_blank">
                 <img src="/images/linkedin.svg" alt="">
             </a>
-            <a href="mailto:enesdeliduman@proton.me" target="_blank">
+            <a up-target="main" href="mailto:enesdeliduman@proton.me" target="_blank">
                 <img src="/images/email.svg" alt="">
             </a>
         </div>
     </footer>
     <script src="/js/main.js"></script>
+    <script src="/js/swiper-bundle.js"></script>
+    <script src="/js/swiper.js"></script>
 </body>
 
 

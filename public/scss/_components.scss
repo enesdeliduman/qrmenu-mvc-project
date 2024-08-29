@@ -2,7 +2,7 @@
   font-size: 2rem;
   margin: 1.5rem;
   padding: 10px 15px;
-  color: $highlight-orange-red;
+  color: $highlight-orange-red !important;
   white-space: nowrap;
   text-align: center;
   user-select: none;
@@ -11,10 +11,10 @@
   border-radius: $rounded;
   z-index: 1;
   &-primary {
+    color: white !important;
     background-color: $highlight-orange-red;
-    color: white;
   }
-  &.disabled{
+  &.disabled {
     background-color: #ff8b71;
     cursor: not-allowed;
   }
@@ -46,5 +46,24 @@
   text-decoration: underline;
   &-primary {
     color: $highlight-orange-red;
+  }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }

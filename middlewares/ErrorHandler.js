@@ -1,3 +1,6 @@
+const metaTagCreator = require("../helpers/metaTagCreator")
+
+
 const ErrorHandler = async (err, req, res, next) => {
     console.error(err);
     let errors = [];
@@ -21,8 +24,10 @@ const ErrorHandler = async (err, req, res, next) => {
         errors.push('MongoDB sunucu hatası: ' + (err.message || 'Bilinmeyen hata'));
     }
     else {
-        
-        return res.send("500 INTERNAL SERVER")
+        return res.render("500", {
+            title: "500 Internal Server Error",
+            metaTags: metaTagCreator()
+        })
     }
 
     req.session.errors = errors;

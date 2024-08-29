@@ -62,9 +62,8 @@ a {
 }
 
 header {
-  margin-bottom: 150px;
   nav {
-    background-color: $gray-100;
+    background-color: transparent;
     position: fixed;
     top: 0;
     right: 0;
@@ -72,24 +71,33 @@ header {
     padding: 3rem 9rem;
     transition: $general-transition;
     z-index: 1000;
+    * {
+      user-select: none;
+    }
+    .nav-logo {
+      .logo {
+        font-size: 5rem;
+        font-family: $primary-font-Bold;
+        color: $highlight-orange-red;
+        @include media(medium) {
+          font-size: 3rem;
+        }
+      }
+    }
     &.scrolled {
+      background-color: $gray-100;
       padding: 1rem 5rem;
+      .nav-logo {
+        .logo {
+          font-size: 3rem;
+        }
+      }
     }
     @include flex(center, space-between, row);
     @include media(medium) {
       padding: 2rem 3rem;
       &.scrolled {
         padding: 1rem 2rem;
-      }
-    }
-    * {
-      user-select: none;
-    }
-    .nav-logo {
-      .logo {
-        font-size: 3rem;
-        font-family: $primary-font-Bold;
-        color: $highlight-orange-red;
       }
     }
     .nav-links {
@@ -301,7 +309,7 @@ header {
     &-active {
       pointer-events: all;
       opacity: 1;
-      height: 100000000000000000000000000vh;
+      height: 1000000vh;
     }
   }
   .qrcode-area {
@@ -311,7 +319,7 @@ header {
     position: fixed;
     background-color: $gray-200;
     border-radius: $rounded;
-    z-index: 10000; // Ensure it's above everything
+    z-index: 10000;
     display: none;
     padding: 80px 20px 20px 20px;
     @include centered();
@@ -356,7 +364,304 @@ header {
 }
 
 main {
+  .home-area {
+    .swiper {
+      &.welcome {
+        .swiper-wrapper {
+          .swiper-slide {
+            height: 100vh;
+            position: relative;
+            .texts {
+              position: absolute;
+              left: 100px;
+              height: 100%;
+              top: 0;
+              transform: translateY(35%);
+              max-width: 50%;
+              @include flex(start, start, column);
+              color: white;
+              opacity: 1;
+              text-align: start;
+              .title {
+                font-family: $primary-font-Bold;
+                font-size: 6rem;
+              }
+              @include media(medium) {
+                left: 35px;
+                max-width: 80%;
+                .title {
+                  font-size: 2rem;
+                }
+                .description {
+                  font-family: $primary-font-Light;
+                  font-size: 1.5rem;
+                }
+              }
+            }
+            .img {
+              width: 100vw;
+              height: 100vh;
+            }
+          }
+        }
+      }
+    }
+    .why {
+      margin-top: 70px;
+      h6 {
+        text-align: center;
+        font-size: 8rem;
+        color: $highlight-orange-red;
+      }
+      .cards {
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        .card {
+          border-radius: $rounded;
+          background-color: $gray-200;
+          @include flex(start, start, column);
+          gap: 8px;
+          .title {
+            background-color: $highlight-orange-red;
+            color: white;
+            padding: 2rem;
+            border-top-left-radius: $rounded;
+            border-top-right-radius: $rounded;
+            width: 100%;
+            font-size: 3rem;
+            font-family: $primary-font-Bold;
+          }
+          .description {
+            font-size: 1.5rem;
+            padding: 2rem;
+          }
+        }
+      }
+      @include media(medium) {
+        h6 {
+          font-size: 4rem;
+        }
+        .cards {
+          @include media(large) {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          @include media(small) {
+            grid-template-columns: repeat(1, 1fr);
+          }
+        }
+      }
+    }
+    .why_o {
+      margin-top: 80px;
+      .titles {
+        color: white;
+        background-color: $highlight-orange-red;
+        @include flex(center, center, column);
+        padding: 2rem 0;
+        margin-bottom: 5rem;
+        gap: -10px;
+        .top-title {
+          font-size: 3rem;
+        }
+        .title {
+          color: $highlight-orange-red;
+          background-color: white;
+          padding: 1rem 2rem;
+        }
+      }
+      .section {
+        .cards {
+          @include flex(center, center, column);
+          gap: 30px;
+          .card {
+            @include flex(center, center, column);
+            width: 100%;
+            background-color: $gray-200;
+            text-align: center;
+            border-radius: $rounded;
+            .title {
+              padding: 2rem;
+              background-color: $highlight-orange-red;
+              width: 100%;
+              color: white;
+              border-start-start-radius: $rounded;
+              border-start-end-radius: $rounded;
+              font-size: 3rem;
+              font-family: $primary-font-ExtraBold;
+            }
+            .description {
+              padding: 4rem 2rem;
+              font-size: 2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  .menu-area {
+    margin-top: 150px;
+    user-select: none;
+    .categories-bar {
+      padding: 0 2rem;
+      .swiper {
+        .swiper-slide {
+          width: auto;
+          background-color: $highlight-orange-red;
+          color: white;
+          border-radius: $rounded;
+          cursor: pointer;
+          transition: $general-transition;
+          a {
+            padding: 0.5rem 1rem;
+            font-size: 2rem;
+          }
+          &-active {
+            background-color: #ff441a;
+          }
+        }
+      }
+    }
+    .categories {
+      padding: 0 20px;
+      margin-top: 20px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      padding-bottom: 40px;
+      @include media(large) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @include media(small) {
+        grid-template-columns: repeat(1, 1fr);
+      }
+      .category-card {
+        max-width: 90%;
+        .category-content {
+          width: 90vw;
+          height: 15vh;
+          background-color: $gray-200;
+          border-radius: $rounded;
+          @include flex(start, center, row);
+          align-items: center;
+          cursor: pointer;
+          gap: 30px;
+          padding-right: 15px;
+          .image {
+            width: 40vw;
+            height: 100%;
+
+            img {
+              max-height: 20vh;
+              height: 100%;
+              object-fit: cover;
+              border-radius: $rounded;
+            }
+          }
+          .texts {
+            max-width: 40vw;
+            padding: 10px 0;
+            .top {
+              display: flex; // @include flex(center, space-between, row); yerine doğrudan flex kullanımı
+              align-items: center;
+              justify-content: space-between;
+              gap: 20px;
+
+              .title {
+                color: $highlight-orange-red;
+                font-family: $primary-font-Bold;
+                font-size: 2rem;
+              }
+              .icon {
+                width: 20px;
+              }
+            }
+            .description {
+              margin-top: 10px;
+            }
+          }
+        }
+
+        .category-card-content {
+          max-height: 0;
+          overflow: hidden;
+          padding: 0 15px;
+          background-color: $gray-200;
+          transition: $general-transition;
+          .products {
+            @include flex(center, center, column);
+            gap: 10px;
+            .product {
+              @include flex(start, start, row);
+              gap: 30px;
+              .image {
+                img {
+                  border-radius: $rounded;
+                  object-fit: cover;
+                  width: 115px;
+                  height: 70px;
+                }
+              }
+              .texts {
+                .titleAndPrice {
+                  @include flex(center, space-between, row);
+                  font-family: $primary-font-Bold;
+                  font-size: 2rem;
+                  color: $highlight-orange-red;
+                }
+                .description{
+                  margin-top: 15px;
+                }
+              }
+            }
+          }
+          &.category-card-content-active {
+            padding: 15px;
+            max-height: 1000px; // Sufficiently large value to ensure content fits
+          }
+        }
+
+        &.category-card-active {
+          .category-content {
+            border-end-end-radius: 0;
+            border-end-start-radius: 0;
+            padding: 0;
+            height: auto;
+            @include flex(center, center, column);
+            gap: 5px;
+            .image {
+              transition: $general-transition;
+              height: 100%;
+              width: 90vw;
+            }
+            .texts {
+              gap: 0;
+              width: 90%;
+              max-width: 100vw;
+              text-align: start;
+              @include flex(start, start, column);
+              .top {
+                .icon {
+                  display: none;
+                }
+              }
+            }
+          }
+          .category-card-content {
+            padding: 15px;
+            border-end-start-radius: $rounded;
+            border-end-end-radius: $rounded;
+            max-height: 1000px;
+            width: 90vw;
+          }
+        }
+      }
+    }
+  }
   .cafe-home {
+    margin-top: 150px;
     #bulk-update-div {
       width: 100%;
       text-align: end;
@@ -421,11 +726,11 @@ main {
           width: 95vw;
           height: 80vh;
           .content {
-            form{
-              .input-group{
+            form {
+              .input-group {
                 @include flex(center, center, column);
                 margin: 15px;
-                *{
+                * {
                   margin: 10px;
                 }
               }
@@ -478,10 +783,20 @@ main {
             margin: 20px 0;
           }
         }
+
+        &.new-category {
+          .card-image {
+            @include flex(center, center, row);
+            img {
+              width: 70%;
+            }
+          }
+        }
       }
     }
   }
   .menu-edit-area {
+    margin-top: 150px;
     .modal {
       overflow-y: auto;
       width: 60vw;
@@ -902,7 +1217,7 @@ main {
     }
   }
   .profile-area {
-    margin-top: 180px;
+    margin-top: 320px;
     form {
       .form-button {
         @include flex(flex-end, flex-end, column);
@@ -1027,6 +1342,7 @@ main {
   }
   .login-area,
   .register-area {
+    margin-top: 150px;
     form {
       @include flex(center, center, column);
       width: 50%;
@@ -1066,6 +1382,24 @@ main {
       }
     }
   }
+  .error-box {
+    width: 100vw;
+    height: 100vh;
+    @include flex(center, center, column);
+    text-align: center;
+    h1 {
+      font-size: 10rem;
+    }
+    p {
+      font-size: 3rem;
+    }
+    a {
+      font-size: 3rem;
+      text-decoration: underline;
+      margin-top: 20px;
+      color: $highlight-orange-red;
+    }
+  }
 }
 .error-area {
   @include flex(center, center, column);
@@ -1086,6 +1420,7 @@ footer {
   gap: 30px;
   position: relative;
   bottom: 0;
+  user-select: none;
   left: 0;
   z-index: 999;
   margin-top: 100px;

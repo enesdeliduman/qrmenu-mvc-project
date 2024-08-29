@@ -1,5 +1,5 @@
-<div class="menu-edit-area">
-    <form method="post" enctype="multipart/form-data">
+<div class="menu-edit-area container">
+    <form method="post" up-submit up-target="content" enctype="multipart/form-data">
         <div class="category-edit-area">
             <div class="category">
                 <div class="category-photo">
@@ -10,8 +10,8 @@
                             class="def-photo" data-for="category">
                     </div>
                     <div class="buttons">
-                        <label for="modal" class="changeButton btn btn-primary" data-for="category">Değiştir</label>
-                        <button class="remove-button btn btn-primary" data-for="category">Kaldır</button>
+                        <label for="modal" class="changeButton btn" data-for="category">Değiştir</label>
+                    <span class="remove-button btn btn-primary" data-for="category">Kaldır</span>
                     </div>
                 </div>
                 <div class="category-inputs">
@@ -37,10 +37,10 @@
                                 data-for="<%=product._id%>" value="<%=product.photo%>">
                         </div>
                         <div class="buttons">
-                            <label for="modal" class="changeButton btn btn-primary"
+                            <label for="modal" class="changeButton btn"
                                 data-for="<%=product._id%>">Değiştir</label>
-                            <button type="button" class="remove-button btn btn-primary"
-                                data-for="<%=product._id%>">Kaldır</button>
+                            <span type="button" class="remove-button btn btn-primary"
+                                data-for="<%=product._id%>">Kaldır</span>
                         </div>
                     </div>
                     <div class="product-inputs">
@@ -54,18 +54,18 @@
                     <!-- <div class="product-buttons">
                             <a class="btn btn-primary">Sil</a>
                         </div> -->
+                    </div>
+                    <% }) %>
                 </div>
-                <% }) %>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal" data-for="modal">
-            <label for="modal" class="close-button">
-                <img class="close-icon" src="/images/close.svg" alt="">
-            </label>
-            <input type="checkbox" class="photoChangeInput" id="modal" data-for="modal">
-            <div class="images-area" data-for="modal">
-                <div class="new-image">
+                
+                <!-- Modal -->
+                <div class="modal" data-for="modal">
+                    <label for="modal" class="close-button">
+                        <img class="close-icon" src="/images/close.svg" alt="">
+                    </label>
+                    <input type="checkbox" class="photoChangeInput" id="modal" data-for="modal">
+                    <div class="images-area" data-for="modal">
+                        <div class="new-image">
                     <label for="product-newImageInput">
                         <img src="/images/upload.svg" alt="">
                     </label>
@@ -82,9 +82,11 @@
             <span class="btn btn-primary in-modal-image-select-button" data-for="modal">Seç</span>
 
         </div>
+        <input type="text" hidden value="selam" name="_csrf">
         <!-- Modal -->
         <div class="form-control">
             <button class="btn btn-primary" type="submit">Kaydet</button>
         </div>
+
     </form>
 </div>

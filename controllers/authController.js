@@ -1,6 +1,8 @@
 const Company = require("../Models/Company");
 const Menu = require("../Models/Menu");
+const Admin = require("../Models/Admin");
 const asyncHandler = require("express-async-handler");
+const metaTagCreator = require("../helpers/metaTagCreator")
 
 module.exports.getLogin = asyncHandler(async (req, res, next) => {
     const errors = req.session.errors || [];
@@ -12,17 +14,22 @@ module.exports.getLogin = asyncHandler(async (req, res, next) => {
 
     res.render("auth/login", {
         title: "Giriş yap",
-        csrfToken: " ",
         errors: errors,
-        formData: formData
+        formData: formData,
+        // csrfToken: req.csrfToken,
+        metaTags: metaTagCreator("Giriş yap", `Giriş yap sayfası, ${process.env.SITE_NAME} platformuna erişim sağlar. Kullanıcı adı ve şifre ile giriş yapabilir, hesap oluşturma ve şifre yenileme işlemlerini gerçekleştirebilirsiniz.`, "defaultPageImage.jpg", "/auth/login")
     });
 });
 
 module.exports.postLogin = asyncHandler(async (req, res, next) => {
     const { emailAddress, password } = req.body;
+    let isAdmin = false
     const errors = [];
-    const company = await Company.findOne({ emailAddress: emailAddress }).select("+password");
-
+    let company = await Company.findOne({ emailAddress: emailAddress }).select("+password");
+    if (!company) {
+        company = await Admin.findOne({ emailAddress: emailAddress }).select("+password");
+        isAdmin = true
+    }
     // Form verilerini kaydedin
     req.session.formData = req.body;
 
@@ -37,6 +44,7 @@ module.exports.postLogin = asyncHandler(async (req, res, next) => {
             req.session.companyId = company._id;
             req.session.name = company.name;
             req.session.email = company.emailAddress;
+            req.session.role = isAdmin ? "admin" : "company";
             req.session.telephone = company.telephone;
             req.session.address = company.address;
             req.session.socialMedia = company.socialMedia;
@@ -64,7 +72,8 @@ module.exports.getRegister = asyncHandler(async (req, res, next) => {
         title: "Kayıt ol",
         errors: errors,
         formData: formData,
-        csrfToken: " ",
+        // csrfToken: req.csrfToken(),
+        metaTags: metaTagCreator("Kayıt Ol", `Kayıt sayfası, ${process.env.SITE_NAME} platformunda hızlı ve güvenli bir şekilde yeni hesap oluşturmanızı sağlar. Tüm özelliklere erişim için kişisel bilgilerinizi girin..`, "defaultPageImage.jpg", "/auth/register")
     });
 });
 
@@ -81,8 +90,6 @@ module.exports.postRegister = asyncHandler(async (req, res, next) => {
             password
         });
 
-        // Menüyü oluştur veya güncelle
-        // Menü modelinin id'sinin şirketin id'si ile eşleştiğinden emin olun
         let updatedMenu = await Menu.findOneAndUpdate(
             { company: company._id },
             {

@@ -1,6 +1,7 @@
 const Company = require("../Models/Company");
 const asyncHandler = require("express-async-handler");
 const Menu = require("../Models/Menu");
+const metaTagCreator = require("../helpers/metaTagCreator")
 
 module.exports.index = asyncHandler(async (req, res, next) => {
     const company = await Company.findById(req.session.companyId)
@@ -11,6 +12,8 @@ module.exports.index = asyncHandler(async (req, res, next) => {
         title: `Kare Menüm | ${req.session.name}`,
         company: company,
         menu: menu,
+        // csrfToken: req.csrfToken(),
+        metaTags: metaTagCreator()
     })
 });
 
@@ -75,11 +78,8 @@ module.exports.bulkCreateAtIndex = asyncHandler(async (req, res, next) => {
     return res.redirect("/");
 });
 
-
-
-
 module.exports.menuGet = asyncHandler(async (req, res, next) => {
-    const categoryId = req.params.id; // `id` -> `categoryId`
+    const categoryId = req.params.id;
     let companyMenu = await Menu.find({ 'company': req.session.companyId });
 
     const categories = companyMenu[0].categories;
@@ -89,7 +89,9 @@ module.exports.menuGet = asyncHandler(async (req, res, next) => {
     return res.render("company/menu", {
         title: `Kare Menüm | ${req.session.name}`,
         selectedCategory: selectedCategory,
-        photos: photos
+        photos: photos,
+        // csrfToken: req.csrfToken(),
+        metaTags: metaTagCreator()
     });
 });
 
@@ -156,7 +158,9 @@ module.exports.profileGet = asyncHandler(async (req, res, next) => {
         title: `Kare Menüm | ${req.session.name} profil`,
         company: company,
         errors: errors,
-        formData: formData
+        formData: formData,
+        // csrfToken: req.csrfToken(),
+        metaTags: metaTagCreator()
     });
 });
 
@@ -192,7 +196,31 @@ module.exports.profilePost = asyncHandler(async (req, res, next) => {
     req.session.socialMedia.twitter = twitter;
     req.session.photo = profilePhoto ??= company.photo;
 
-
-
     return res.redirect('/')
 });
+
+module.exports.newMenu = asyncHandler(async (req, res, next) => {
+    let updatedMenu = await Menu.findOneAndUpdate(
+        { company: req.session.companyId },
+        {
+            $push: {
+                categories: {
+                    name: 'İçecekler',
+                    photo: 'cay.jpg',
+                    description: 'Ferahlatıcı ve lezzetli içeceklerimizle kendinizi şımartın. Her damak zevkine uygun seçenekler sizi bekliyor!',
+                    products: [
+                        {
+                            name: 'Çay',
+                            description: 'Yüksek kaliteli, taze demlenmiş çaylarımızla rahatlatıcı bir molanın tadını çıkarın.',
+                            price: 8,
+                            photo: 'cay.jpg'
+                        }
+                    ]
+                }
+            }
+        },
+        { new: true, upsert: true } // Menü bulunmazsa yeni bir tane oluştur
+    );
+
+    return res.redirect('/')
+});     
